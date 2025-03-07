@@ -1,4 +1,4 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
@@ -15,6 +15,26 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+    },
+    verifyOTP: {
+      type: String,
+      default: "",
+    },
+    verifyExpiryOTP: {
+      type: Number,
+      default: 0,
+    },
+    isAccountVerified: {
+      type: Boolean,
+      default: false,
+    },
+    resetOTP: {
+      type: String,
+      default: "",
+    },
+    resetOtpExpiry: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }
