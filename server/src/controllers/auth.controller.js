@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import transporter from "../config/EmailVerfication.js";
 
 export const register = async (req, res) => {
   try {
@@ -24,6 +25,16 @@ export const register = async (req, res) => {
 
     await newUser.save();
     console.log(newUser);
+
+
+    const mailOption = {
+      from: process.env.SMTP_USER,
+      to: email,
+      subject: 'Welcome to Task Management System - 2025',
+      text: 'You have successfully logged in to Task Management System - 2025',
+    }
+
+   await transporter.sendMail(mailOption);    
 
     return res.status(200).json({
       success: true,
@@ -78,6 +89,7 @@ export const login = async (req, res) => {
       path: "/",
       expiresIn: new Date(Date.now() + 24 * 60 * 60 + 1000),
     });
+
 
     res.status(200).json({
       success: true,
