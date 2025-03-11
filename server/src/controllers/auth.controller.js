@@ -142,8 +142,8 @@ export const sendVerifyOTP = async (req, res) => {
     const OTP = Math.floor(100000 + Math.random() * 900000);
 
     user.verifyOTP = OTP;;
-    user.verifyExpiryOTP =  Date.now() + 24 * 60 * 60 * 1000
-    console.log(verifyExpiryOTP.toLocalString());
+    user.verifyExpiryOTP = new Date(Date.now() + 24 * 60 * 60 * 1000)
+    // console.log(verifyExpiryOTP.toLocalString());
     
 
     await user.save()
@@ -159,11 +159,76 @@ export const sendVerifyOTP = async (req, res) => {
     
     await transporter.sendMail(mailOptions)
 
-    res.json({
+    res.status(200).json({
       success: true,
       message: 'Verification otp send an email'
     })
 
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+  })
+  }
+}
+
+export const verifyEmail = async (req, res) => {
+  try {
+    const {userId, OTP} = req.body
+
+    if (!userId || !OTP) {
+      return res.json({
+        success: false,
+        message: 'User ID and OTP are required.'
+      });
+    }
+
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User is not valid"
+      })
+    }
+
+    if (!user.verifyOTP === '' || user.verifyOTP !== OTP) {
+      return res.json({
+        success: false,
+        message: 'Invalid OTP.'
+      })
+    }
+
+    if (user.verifyExpiryOTP < Date.now()) {
+      return  res.json({
+        success: false,
+        message: 'OTP is expired'
+      })
+    }
+
+    user.isAccountVerified = true
+    user.verifyOTP = ''
+    user.verifyExpiryOTP = 0
+
+    await user.save()
+    return res.json({
+      success: true,
+      message: 'User verified successfully'
+    })
+
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message
+  })
+  }
+}
+
+export const isAuthanticated = async (req, res) => {
+  try {
+    return res.json({
+      success:true,
+      message: 'Account is verified'
+    })
   } catch (error) {
     res.json({
       success: false,
