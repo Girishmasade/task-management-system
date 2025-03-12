@@ -236,3 +236,91 @@ export const isAuthanticated = async (req, res) => {
   })
   }
 }
+
+export const sendResetPassword  = async (req, res) => {
+  try {
+    const {email} = req.body
+    const user = await User.findOne({email})
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: 'Email is not registered'
+      })
+    }
+
+    const OTP = Math.floor(100000 + Math.random() * 900000)
+
+    user.resetOTP = OTP
+    user.resetOtpExpiry = new Date(Date.now() + + 15 * 60 * 1000)
+
+    await user.save()
+
+    const mailOption = {
+      from: process.env.SMTP_USER,
+      to: user.email,
+      text: 'Password Reset OTP',
+      // html: Password_Reset_OTP.replace("{{OTP}}", OTP).replace("{{email}}", user.email)
+    }
+
+    await transporter.sendMail(mailOption)
+
+    return res.json({
+      success: false,
+      message: 'Password reset otp send'
+    })
+
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message
+  })
+  }
+}
+
+export const resetPassword = async (req, res) => {
+  try {
+    const {email, OTP, newPassword} = req.body
+    const user = await User.findOne({email})
+
+    if (!user) {
+      return res.json({
+        succes: false,
+        message: 'Email is not registered'
+      })
+    }
+
+    if (!user.resetOTP === '' || user.resetOTP !== OTP) {
+      return res.json({
+        success: false,
+        message: 'Invalid OTP'
+      })
+    }
+
+    if (user.resetOtpExpiry < Date.now()) {
+      return res.json({
+        success: false,
+        message: 'OTP expired'
+      })
+    }
+
+    const hashedPassword = bcrypt.hashSync(newPassword, 10)
+
+    user.password = hashedPassword
+    user.verifyOTP = ''
+    user.verifyExpiryOTP = 0
+
+    await user.save()
+
+    return res.json({
+      success: true,
+      message: 'Password reset successfull'
+    })
+
+  } catch (error) {
+    return res.json({
+      success:false,
+      message: error.message
+    })
+  }
+}
