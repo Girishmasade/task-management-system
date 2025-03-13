@@ -4,6 +4,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import authRouter from './src/routers/auth.route.js'
 import connectDB from './src/Database/Database.js'
+import adminRouter from './src/routers/adminAuth.route.js'
 
 dotenv.config({
     path: './.env'
@@ -23,5 +24,6 @@ connectDB()
 
 // all Routers
 app.use('/api/auth', authRouter)
+app.use('/api/admin', adminRouter)
 
 export {app}
