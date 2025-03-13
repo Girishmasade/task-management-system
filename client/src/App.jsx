@@ -8,10 +8,7 @@ import Footer from './components/Footer'
 const App = () => {
   return (
     <div>
-      <Navbar/>
       <SideBar/>
-      <TaskData/>
-      <Router/>
       <Footer/>
     </div>
   )
