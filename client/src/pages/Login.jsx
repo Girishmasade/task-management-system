@@ -3,12 +3,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import { Divider } from "@mui/material";
-import axios from "axios";
+import axios, { AxiosHeaders } from "axios";
 import { AppContext } from "../context/AppContext";
 
 const Login = () => {
-
-  const {backendURL, navigate} = useContext(AppContext)
+  const { backendURL, navigate } = useContext(AppContext);
 
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid Email").required("Email is required"),
@@ -17,18 +16,22 @@ const Login = () => {
       .required("Password is required"),
   });
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (values) => {
     try {
-      const response = await axios(`${backendURL}/api/auth/login`, );
-      if (response.ok) {   
-        navigate('/')
+      const response = await axios(backendURL + `/api/auth/login`, values, {
+        AxiosHeaders: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      if (response.ok) {
+        navigate("/");
       } else {
-        console.log('error in api');
-        
+        console.log("error in api");
       }
       // console.log(response);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
