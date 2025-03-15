@@ -11,9 +11,12 @@ dotenv.config({
     path: './.env'
 })
 
+const allowedOrigins = ['http://localhost:5173']
+
 const app = express()
 app.use(express.json())
 app.use(cors({
+    origin: allowedOrigins,
     credentials: true 
 }))
 app.use(cookieParser())

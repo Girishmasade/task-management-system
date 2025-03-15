@@ -26,3 +26,11 @@ export const addTask = async (req, res) => {
         res.status(400).json({ message: "Invalid task data" });
     }
 }
+
+export const updateTask = async (req, res) => {
+    try {
+        const {title, description, assignedTo, priority, status} = req.body
+    } catch (error) {
+        
+    }
+}

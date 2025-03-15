@@ -4,7 +4,8 @@ import About from '../pages/About'
 import Activity from '../pages/Activity'
 import Task from '../pages/Task'
 import Profile from '../pages/Profile'
-import Login from '../pages/Login'
+import Login from '../pages/authantication/Login'
+import Signup from '../pages/authantication/Signup'
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
       <Route path='/tasks' element={<Task/>}/>
       <Route path='/profile' element={<Profile/>}/>
       <Route path='/login' element={<Login/>}/>
+      <Route path='/signup' element={<Signup/>}/>
     </Routes>
   )
 }
