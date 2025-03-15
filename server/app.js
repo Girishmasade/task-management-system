@@ -6,6 +6,7 @@ import authRouter from './src/routers/auth.route.js'
 import connectDB from './src/Database/Database.js'
 import adminRouter from './src/routers/adminAuth.route.js'
 import taskRouter from './src/routers/task.route.js'
+import userRoute from './src/routers/user.route.js'
 
 dotenv.config({
     path: './.env'
@@ -30,5 +31,6 @@ connectDB()
 app.use('/api/auth', authRouter)
 app.use('/api/admin', adminRouter)
 app.use('/api/task', taskRouter)
+app.use('/api/user', userRoute)
 
 export {app}
