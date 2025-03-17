@@ -8,6 +8,7 @@ import Trash from "../pages/Trash";
 import About from "../pages/About";
 import { Toaster } from "sonner"; 
 import Layout from "../components/lib/Layout";
+import Signup from "../pages/authantication/Signup";
 
 const Router = () => {
   return (
@@ -29,6 +30,7 @@ const Router = () => {
 
         {/* Public Routes */}
         <Route path="/log-in" element={<Login />} />
+        <Route path="/sign-up" element={<Signup/>} />
       </Routes>
 
       {/* Toaster Notifications */}

@@ -13,7 +13,7 @@ const Login = () => {
 
   const submitHandler = async (data) => {
     console.log("Form Submitted", data);
-    // Add authentication logic here
+   
   };
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Login = () => {
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0d0d2b] to-[#130f40] p-4">
       <div className="w-full max-w-4xl flex flex-col md:flex-row items-center justify-center shadow-xl backdrop-blur-lg bg-white/10 rounded-xl p-6 sm:p-8 border border-white/20">
-        {/* Left Side - Branding */}
+        {/* Left Side */}
         <div className="hidden md:flex flex-col items-center text-center text-white w-1/2 p-4">
           <p className="text-sm sm:text-lg border border-gray-300 rounded-full px-3 py-1">
             Organize your tasks effortlessly!
@@ -35,7 +35,7 @@ const Login = () => {
           </h1>
         </div>
 
-        {/* Right Side - Login Form */}
+        {/* Right Side*/}
         <div className="w-full md:w-1/2 p-4 sm:p-6">
           <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
             <h2 className="text-center text-2xl sm:text-3xl font-bold text-white">
@@ -83,6 +83,10 @@ const Login = () => {
               label="Sign In"
               className="w-full py-2 bg-gradient-to-r from-green-500 to-cyan-400 text-black uppercase rounded-lg hover:shadow-lg transition duration-300"
             />
+            {/* <div className="flex items-center text-center flex-col text-white">
+              <p className="text-xl">Create an account</p>
+              <a href="/sign-up" className="text-cyan-300">SignUp</a>
+            </div> */}
           </form>
         </div>
       </div>
