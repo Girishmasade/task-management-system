@@ -9,10 +9,10 @@ import { Provider } from "react-redux";
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
 
-  <Provider store={store}>
     <AppContextProvider>
+  <Provider store={store}>
       <App />
-    </AppContextProvider>
   </Provider>
+    </AppContextProvider>
   </BrowserRouter>
 );

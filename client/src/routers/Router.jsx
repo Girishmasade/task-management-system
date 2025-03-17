@@ -6,6 +6,7 @@ import Task from '../pages/Task'
 import Profile from '../pages/Profile'
 import Login from '../pages/authantication/Login'
 import Signup from '../pages/authantication/Signup'
+import EmailVerify from '../pages/authantication/EmailVerify'
 
 const Router = () => {
   return (
@@ -17,6 +18,7 @@ const Router = () => {
       <Route path='/profile' element={<Profile/>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path='/signup' element={<Signup/>}/>
+      <Route path='/verify-account' element={<EmailVerify/>}/>
     </Routes>
   )
 }
