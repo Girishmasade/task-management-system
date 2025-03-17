@@ -1,75 +1,92 @@
-import React, { useContext } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { TextField, Button, Box, Typography, Container } from "@mui/material";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import {AppContext} from '../../context/AppContext'
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import Textbox from "../../components/Textbox";
+import Button from "../../components/Button";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 const Login = () => {
+  const user = "";
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
-  const {backendURL} = useContext(AppContext)
+  const [showPassword, setShowPassword] = useState(false);
 
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: Yup.object({
-      email: Yup.string().email("Invalid email").required("Email is required"),
-      password: Yup.string().min(5, "Password must be at least 5 characters").required("Password is required"),
-    }),
-    onSubmit: async (values) => {
-      try {
-        const { data } = await axios.post(
-          `${backendURL}/api/auth/login`,
-          values,
-          { withCredentials: true }
-        );
+  const submitHandler = async (data) => {
+    console.log("Form Submitted", data);
+    // Add authentication logic here
+  };
 
-        if (data.success) {
-          localStorage.setItem("token", data.token);
-          toast.success("Login successful");
-          navigate("/");
-        } else {
-          toast.error(data.message);
-        }
-      } catch (error) {
-        toast.error(error.response?.data?.message || "Login failed. Please try again.");
-      }
-    },
-  });
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
 
   return (
-    <Container maxWidth="xs">
-      <Box sx={{ mt: 8, p: 4, boxShadow: 3, borderRadius: 2, bgcolor: "white" }}>
-        <Typography variant="h4" sx={{ mb: 3, textAlign: "center" }}>Login</Typography>
-        <form onSubmit={formik.handleSubmit}>
-          <TextField
-            fullWidth
-            label="Email"
-            {...formik.getFieldProps("email")}
-            margin="normal"
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-          />
-          <TextField
-            fullWidth
-            label="Password"
-            type="password"
-            {...formik.getFieldProps("password")}
-            margin="normal"
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-          />
-          <Button type="submit" variant="contained" fullWidth sx={{ mt: 3 }}>Login</Button>
-        </form>
-        <Box sx={{ textAlign: "center", mt: 2 }}>
-          <Typography variant="body1">Not a Member? <Link to="/signup" style={{ color: "blue" }}>Sign Up</Link></Typography>
-        </Box>
-      </Box>
-    </Container>
+    <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0d0d2b] to-[#130f40] p-4">
+      <div className="w-full max-w-4xl flex flex-col md:flex-row items-center justify-center shadow-xl backdrop-blur-lg bg-white/10 rounded-xl p-6 sm:p-8 border border-white/20">
+        {/* Left Side - Branding */}
+        <div className="hidden md:flex flex-col items-center text-center text-white w-1/2 p-4">
+          <p className="text-sm sm:text-lg border border-gray-300 rounded-full px-3 py-1">
+            Organize your tasks effortlessly!
+          </p>
+          <h1 className="text-3xl sm:text-5xl font-extrabold mt-4 bg-gradient-to-r from-green-400 to-cyan-500 text-transparent bg-clip-text">
+            Task Manager
+          </h1>
+        </div>
+
+        {/* Right Side - Login Form */}
+        <div className="w-full md:w-1/2 p-4 sm:p-6">
+          <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
+            <h2 className="text-center text-2xl sm:text-3xl font-bold text-white">
+              Welcome Back!
+            </h2>
+            <p className="text-center text-gray-300 text-xs sm:text-sm">
+              Your credentials are encrypted.
+            </p>
+
+            <Textbox
+              placeholder="email@example.com"
+              type="email"
+              name="email"
+              label="Email Address"
+              className="w-full rounded-lg text-white"
+              register={register("email", { required: "Email is required!" })}
+              error={errors.email?.message}
+            />
+
+            <div className="relative w-full">
+              <Textbox
+                placeholder="Your password"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                label="Password"
+                className="w-full rounded-lg text-white"
+                register={register("password", { required: "Password is required!" })}
+                error={errors.password?.message}
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-10 text-gray-400 hover:text-white"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+              </button>
+            </div>
+
+            <div className="flex justify-between items-center text-xs sm:text-sm text-gray-400">
+              <span className="hover:text-green-400 cursor-pointer">Forgot Password?</span>
+            </div>
+
+            <Button
+              type="submit"
+              label="Sign In"
+              className="w-full py-2 bg-gradient-to-r from-green-500 to-cyan-400 text-black uppercase rounded-lg hover:shadow-lg transition duration-300"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 

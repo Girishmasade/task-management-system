@@ -1,26 +1,40 @@
-import { Route, Routes } from 'react-router-dom'
-import Home from '../pages/Home'
-import About from '../pages/About'
-import Activity from '../pages/Activity'
-import Task from '../pages/Task'
-import Profile from '../pages/Profile'
-import Login from '../pages/authantication/Login'
-import Signup from '../pages/authantication/Signup'
-import EmailVerify from '../pages/authantication/EmailVerify'
+import { Navigate, Route, Routes } from "react-router-dom";
+import Task from "../pages/task/Task";
+import Login from "../pages/authantication/Login"; //
+import Dashboard from "../pages/DashBoard"; //
+import TaskDetails from "../pages/task/TaskDetails";
+import Team from "../pages/Team";
+import Trash from "../pages/Trash";
+import About from "../pages/About";
+import { Toaster } from "sonner"; 
+import Layout from "../components/lib/Layout";
 
 const Router = () => {
   return (
-    <Routes>
-      <Route path='/' element={<Home/>}/>
-      <Route path='/about' element={<About/>}/>
-      <Route path='/activity' element={<Activity/>}/>
-      <Route path='/tasks' element={<Task/>}/>
-      <Route path='/profile' element={<Profile/>}/>
-      <Route path='/login' element={<Login/>}/>
-      <Route path='/signup' element={<Signup/>}/>
-      <Route path='/verify-account' element={<EmailVerify/>}/>
-    </Routes>
-  )
-}
+    <main>
+      <Routes>
+        {/* Protected Routes (Require Authentication) */}
+        <Route element={<Layout />}>
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/tasks" element={<Task />} />
+          <Route path="/completed/:status" element={<Task />} />
+          <Route path="/in-progress/:status" element={<Task />} />
+          <Route path="/todo/:status" element={<Task />} />
+          <Route path="/task/:id" element={<TaskDetails />} />
+          <Route path="/team" element={<Team />} />
+          <Route path="/trashed" element={<Trash />} />
+          <Route path="/about" element={<About />} />
+        </Route>
 
-export default Router
+        {/* Public Routes */}
+        <Route path="/log-in" element={<Login />} />
+      </Routes>
+
+      {/* Toaster Notifications */}
+      <Toaster richColors />
+    </main>
+  );
+};
+
+export default Router;
