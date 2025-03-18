@@ -1,16 +1,19 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../ui/Navbar";
+import { useSelector } from "react-redux";
+import Sidebar from "../ui/SideBar";
+import { MobileSidebar } from "./MobileSideBar";
 
 const Layout = () => {
-  const user = "";
+  const { user } = useSelector((state) => state.auth);
   const location = useLocation();
 
   return user ? (
     <div className="w-full h-screen flex flex-col md:flex-row">
       <div className="w-1/5 h-screen bg-white sticky top-0 hidden md:block">
-        {/* SideBar */}
+      <Sidebar/>
       </div>
-      {/* MobileSidebar */}
+      <MobileSidebar/>
 
       <div className="flex-1 overflow-y-auto">
         <Navbar />

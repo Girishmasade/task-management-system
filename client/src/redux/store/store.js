@@ -1,14 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "../slice/UserSlice";
-import taskReducer from "../slice/TaskSlice"; // Import the new task reducer
+import authReducer from "../slice/authSlice";
+import { apiSlice } from "../slice/apiSlice";
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
-    user: userReducer,
-    task: taskReducer, // Add the task reducer
+    [apiSlice.reducerPath]: apiSlice.reducer,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false, // ✅ Fixes possible serialization errors
-    }),
+    getDefaultMiddleware().concat(apiSlice.middleware),
+  devTools: true,
 });
+
+export default store;

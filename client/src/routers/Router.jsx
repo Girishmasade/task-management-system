@@ -16,7 +16,7 @@ const Router = () => {
       <Routes>
         {/* Protected Routes (Require Authentication) */}
         <Route element={<Layout />}>
-          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route index path="/" element={<Navigate to="/dashboard" />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/tasks" element={<Task />} />
           <Route path="/completed/:status" element={<Task />} />
