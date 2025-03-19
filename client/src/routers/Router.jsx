@@ -12,7 +12,7 @@ import Signup from "../pages/authantication/Signup";
 
 const Router = () => {
   return (
-    <main>
+    <main className="p-2">
       <Routes>
         {/* Protected Routes (Require Authentication) */}
         <Route element={<Layout />}>
