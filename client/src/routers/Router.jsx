@@ -22,10 +22,9 @@ const Router = () => {
           <Route path="/completed/:status" element={<Task />} />
           <Route path="/in-progress/:status" element={<Task />} />
           <Route path="/todo/:status" element={<Task />} />
-          <Route path="/task/:id" element={<TaskDetails />} />
           <Route path="/team" element={<Team />} />
           <Route path="/trashed" element={<Trash />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/tasks/:id" element={<TaskDetails />} />
         </Route>
 
         {/* Public Routes */}

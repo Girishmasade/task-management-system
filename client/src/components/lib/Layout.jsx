@@ -3,6 +3,7 @@ import Navbar from "../ui/Navbar";
 import { useSelector } from "react-redux";
 import Sidebar from "../ui/SideBar";
 import { MobileSidebar } from "./MobileSideBar";
+import Footer from "../ui/Footer";
 
 const Layout = () => {
   const { user } = useSelector((state) => state.auth);
@@ -15,13 +16,18 @@ const Layout = () => {
       </div>
       <MobileSidebar/>
 
-      <div className="w-[80%] overflow-y-auto">
-        <Navbar />
+      <div className="w-full overflow-y-auto">
+        <Navbar /> 
 
-        <div className="p-4 2xl:px-10">
+        <div className="p-2 2xl:px-10">
           <Outlet />
         </div>
+      <div className="border-l border-white">
+      <Footer/>
       </div>
+      </div>
+
+     
     </div>
   ) : (
     <Navigate to="/log-in" state={{ from: location }} replace />

@@ -7,7 +7,7 @@ const TaskTitle = ({ label, className }) => {
     <div className="w-full h-10 md:h-12 px-2 md:px-4 rounded bg-white dark:bg-gray-800 flex items-center justify-between shadow-sm">
     <div className="flex gap-2 items-center">
       <div className={clsx("w-4 h-4 rounded-full", className)} />
-      <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">{label}</p>
+      <p className="text-sm md:text-base text-gray-800 dark:text-gray-300">{label}</p>
     </div>
 
     <button className="hidden md:block">
