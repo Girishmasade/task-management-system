@@ -8,7 +8,8 @@ import Trash from "../pages/Trash";
 import About from "../pages/About";
 import { Toaster } from "sonner"; 
 import Layout from "../components/lib/Layout";
-import Signup from "../pages/authantication/Signup";
+import SignUp from "../pages/authantication/Signup";
+import EmailVerify from "../pages/authantication/EmailVerify";
 
 const Router = () => {
   return (
@@ -28,8 +29,9 @@ const Router = () => {
         </Route>
 
         {/* Public Routes */}
-        <Route path="/log-in" element={<Login />} />
-        <Route path="/sign-up" element={<Signup/>} />
+        <Route path="/signup" element={<SignUp/>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/email-verify" element={<EmailVerify />} />
       </Routes>
 
       {/* Toaster Notifications */}

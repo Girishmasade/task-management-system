@@ -1,11 +1,160 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import Textbox from "../../components/Textbox";
+import Button from "../../components/Button";
 
-const Signup = () => {
+const SignUp = () => {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const password = watch("password");
+
+  const submitHandler = async (data) => {
+    console.log("Sign-Up Data:", data);
+  };
+
+  useEffect(() => {
+   navigate("/login");
+  }, [navigate]);
+
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0d0d2b] to-[#130f40] p-4">
+      <div className="w-full max-w-4xl flex flex-col md:flex-row items-center justify-center shadow-xl backdrop-blur-lg bg-white/10 rounded-xl p-6 sm:p-8 border border-white/20">
+        
+        <div className="hidden md:flex flex-col items-center text-center text-white w-1/2 p-4">
+          <p className="text-sm sm:text-lg border border-gray-300 rounded-full px-3 py-1">
+            Join us & manage tasks effortlessly!
+          </p>
+          <h1 className="text-3xl sm:text-5xl font-extrabold mt-4 bg-gradient-to-r from-green-400 to-cyan-500 text-transparent bg-clip-text">
+            Task Manager
+          </h1>
+        </div>
 
-export default Signup
+        <div className="w-full md:w-1/2 p-4 sm:p-6">
+          <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
+            <h2 className="text-center text-2xl sm:text-3xl font-bold text-white">
+              Create an Account
+            </h2>
+            <p className="text-center text-gray-300 text-xs sm:text-sm">
+              Your credentials are encrypted & secure.
+            </p>
+
+            <Textbox
+              placeholder="John Doe"
+              type="text"
+              name="fullName"
+              label="Full Name"
+              className="w-full rounded-lg text-white"
+              register={register("fullName", { required: "Full name is required!" })}
+              error={errors.fullName?.message}
+            />
+
+            <Textbox
+              placeholder="email@example.com"
+              type="email"
+              name="email"
+              label="Email Address"
+              className="w-full rounded-lg text-white"
+              register={register("email", { required: "Email is required!" })}
+              error={errors.email?.message}
+              autoComplete="email"
+            />
+
+            <div className="relative w-full">
+              <Textbox
+                placeholder="Create a password"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                label="Password"
+                className="w-full rounded-lg text-white"
+                register={register("password", {
+                  required: "Password is required!",
+                  minLength: { value: 6, message: "Password must be at least 6 characters" },
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{6,}$/,
+                    message: "Must include letters & numbers",
+                  },
+                })}
+                error={errors.password?.message}
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-10 text-gray-400 hover:text-white"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+              </button>
+            </div>
+
+            <div className="relative w-full">
+              <Textbox
+                placeholder="Confirm password"
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                label="Confirm Password"
+                className="w-full rounded-lg text-white"
+                register={register("confirmPassword", {
+                  required: "Please confirm your password",
+                  validate: (value) =>
+                    value === password || "Passwords do not match!",
+                })}
+                error={errors.confirmPassword?.message}
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-10 text-gray-400 hover:text-white"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+              </button>
+            </div>
+
+            <div className="flex items-center space-x-2 text-gray-300 text-xs sm:text-sm">
+              <input
+                type="checkbox"
+                id="terms"
+                {...register("terms", { required: "You must accept the terms!" })}
+                className="w-4 h-4 accent-green-400 cursor-pointer"
+              />
+              <label htmlFor="terms">
+                I agree to the{" "}
+                <a href="/terms" className="text-cyan-300 hover:underline">
+                  Terms & Conditions
+                </a>
+              </label>
+            </div>
+            {errors.terms && <p className="text-red-400 text-xs">{errors.terms.message}</p>}
+
+            <Button
+              type="submit"
+              label="Sign Up"
+              className="w-full py-2 bg-gradient-to-r from-green-500 to-cyan-400 text-black uppercase rounded-lg hover:shadow-lg transition duration-300"
+            />
+
+            <div className="text-center text-white text-sm mt-4">
+              Already have an account?{" "}
+              <a href="/login" className="text-cyan-300 hover:underline">
+                Log in
+              </a>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default SignUp;

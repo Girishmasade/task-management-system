@@ -6,7 +6,7 @@ const Textbox = React.forwardRef(
     return (
       <div className="w-full flex flex-col gap-1">
         {label && (
-          <label htmlFor={name} className="text-gray-900">
+          <label htmlFor={name} className="text-gray-200">
             {label}
           </label>
         )}

@@ -95,10 +95,10 @@ const Login = () => {
               label="Sign In"
               className="w-full py-2 bg-gradient-to-r from-green-500 to-cyan-400 text-black uppercase rounded-lg hover:shadow-lg transition duration-300"
             />
-            {/* <div className="flex items-center text-center flex-col text-white">
+            <div className="flex items-center text-center flex-col text-white">
               <p className="text-xl">Create an account</p>
-              <a href="/sign-up" className="text-cyan-300">SignUp</a>
-            </div> */}
+              <a href="/signup" className="text-cyan-300 pt-1 text-xl underline">SignUp</a>
+            </div>
           </form>
         </div>
       </div>

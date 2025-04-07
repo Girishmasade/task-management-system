@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Sidebar from "../ui/SideBar";
 import { MobileSidebar } from "./MobileSideBar";
 import Footer from "../ui/Footer";
+import FloatingChat from "../FloatingChat";
 
 const Layout = () => {
   const { user } = useSelector((state) => state.auth);
@@ -12,7 +13,7 @@ const Layout = () => {
   return user ? (
     <div className="w-full h-screen flex flex-col md:flex-row bg-gray-200 ">
       <div className="w-[20%] h-screen bg-white sticky top-0 hidden md:block">
-      <Sidebar/>
+        <Sidebar/>
       </div>
       <MobileSidebar/>
 
@@ -22,15 +23,15 @@ const Layout = () => {
         <div className="p-2 2xl:px-10">
           <Outlet />
         </div>
-      <div className="border-l border-white">
-      <Footer/>
+        <div className="border-l border-white">
+          <Footer/>
+        </div>
       </div>
-      </div>
-
-     
+      
+      <FloatingChat />
     </div>
   ) : (
-    <Navigate to="/log-in" state={{ from: location }} replace />
+    <Navigate to="/login" state={{ from: location }} replace />
   );
 };
 

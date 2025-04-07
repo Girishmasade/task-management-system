@@ -5,15 +5,17 @@ import { IoLogOutOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getInitials } from "../../utils/helper";
+import { logout } from "../../redux/slice/authSlice";
 
 const UserAvatar = () => {
   const [open, setOpen] = useState(false);
-  const [openPassword, setOpenPassword] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const logoutHandler = () => {
+    dispatch(logout())
+    navigate('/login')
     console.log("logout");
   };
 
@@ -52,7 +54,7 @@ const UserAvatar = () => {
                   )}
                 </Menu.Item>
 
-                <Menu.Item>
+                {/* <Menu.Item>
                   {({ active }) => (
                     <button
                       onClick={() => setOpenPassword(true)}
@@ -62,7 +64,7 @@ const UserAvatar = () => {
                       Change Password
                     </button>
                   )}
-                </Menu.Item>
+                </Menu.Item> */}
 
                 <Menu.Item>
                   {({ active }) => (

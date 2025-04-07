@@ -3,7 +3,6 @@ import {
   MdDashboard,
   MdOutlineAddTask,
   MdOutlinePendingActions,
-  MdSettings,
   MdTaskAlt,
 } from "react-icons/md";
 import { FaTasks, FaTrashAlt, FaUsers } from "react-icons/fa";
@@ -95,10 +94,7 @@ const Sidebar = () => {
       </div>
 
       <div>
-        <button className="w-full flex gap-2 p-2 items-center text-lg text-gray-300 hover:text-white hover:bg-gray-700 transition duration-300">
-          <MdSettings />
-          <span>Settings</span>
-        </button>
+      
       </div>
     </div>
   );
