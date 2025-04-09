@@ -28,5 +28,4 @@ connectDB()
 // all Routers
 app.use('/api/auth', authRouter)
 app.use('/api/task', taskRouter)
-
 export {app}

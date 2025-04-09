@@ -16,6 +16,14 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    role: { type: String,
+       required: true,
+      enum: ["admin", "user"]
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
     verifyOTP: {
       type: String,
       default: "",

@@ -5,7 +5,7 @@ import transporter from "../config/EmailVerfication.js";
 
 export const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, isAdmin, role } = req.body;
 
     const user = await User.findOne({ email });
     if (user) {
@@ -20,6 +20,8 @@ export const register = async (req, res) => {
     const newUser = new User({
       username,
       email,
+      isAdmin,
+      role,
       password: hashPassword,
     });
 
@@ -34,7 +36,19 @@ export const register = async (req, res) => {
       text: 'You have successfully logged in to Task Management System - 2025',
     }
 
-   await transporter.sendMail(mailOption);    
+   await transporter.sendMail(mailOption); 
+   
+   if (user) {
+    isAdmin ? createJWT(res, user._id) : null;
+
+    user.password = undefined;
+
+    res.status(201).json(user);
+  } else {
+    return res
+      .status(400)
+      .json({ status: false, message: "Invalid user data" });
+  }
 
     return res.status(200).json({
       success: true,

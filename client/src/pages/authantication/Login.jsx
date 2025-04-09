@@ -1,23 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Textbox from "../../components/Textbox";
 import Button from "../../components/Button";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../../redux/slice/app/authApiSlice";
+import { toast } from "sonner";
+import { setCredentials } from "../../redux/slice/authSlice";
+import Loading from "../../components/Loader";
 
 const Login = () => {
   const { user } = useSelector((state) => state.auth);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [login, { isLoading }] = useLoginMutation();
 
   const submitHandler = async (data) => {
-    console.log("Form Submitted", data);
+    try {
+      const result = await login(data).unwrap();
+      dispatch(setCredentials(result));
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || "Login failed!");
+    }
   };
 
   useEffect(() => {
@@ -27,7 +42,7 @@ const Login = () => {
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0d0d2b] to-[#130f40] p-4">
       <div className="w-full max-w-4xl flex flex-col md:flex-row items-center justify-center shadow-xl backdrop-blur-lg bg-white/10 rounded-xl p-6 sm:p-8 border border-white/20">
-    
+        {/* Left Side */}
         <div className="hidden md:flex flex-col items-center text-center text-white w-1/2 p-4">
           <p className="text-sm sm:text-lg border border-gray-300 rounded-full px-3 py-1">
             Organize your tasks effortlessly!
@@ -37,7 +52,7 @@ const Login = () => {
           </h1>
         </div>
 
- 
+        {/* Right Side */}
         <div className="w-full md:w-1/2 p-4 sm:p-6">
           <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
             <h2 className="text-center text-2xl sm:text-3xl font-bold text-white">
@@ -69,7 +84,7 @@ const Login = () => {
                   required: "Password is required!",
                 })}
                 error={errors.password?.message}
-                autoComplete="current-password" 
+                autoComplete="current-password"
               />
               <button
                 type="button"
@@ -90,14 +105,21 @@ const Login = () => {
               </span>
             </div>
 
-            <Button
-              type="submit"
-              label="Sign In"
-              className="w-full py-2 bg-gradient-to-r from-green-500 to-cyan-400 text-black uppercase rounded-lg hover:shadow-lg transition duration-300"
-            />
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <Button
+                type="submit"
+                label="Sign In"
+                className="w-full py-2 bg-gradient-to-r from-green-500 to-cyan-400 text-black uppercase rounded-lg hover:shadow-lg transition duration-300"
+              />
+            )}
+
             <div className="flex items-center text-center flex-col text-white">
               <p className="text-xl">Create an account</p>
-              <a href="/signup" className="text-cyan-300 pt-1 text-xl underline">SignUp</a>
+              <Link to="/signup" className="text-cyan-300 pt-1 text-xl underline">
+                SignUp
+              </Link>
             </div>
           </form>
         </div>

@@ -1,38 +1,36 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../ui/Navbar";
-import { useSelector } from "react-redux";
 import Sidebar from "../ui/SideBar";
 import { MobileSidebar } from "./MobileSideBar";
 import Footer from "../ui/Footer";
 import FloatingChat from "../FloatingChat";
+import { useSelector } from "react-redux";
 
 const Layout = () => {
   const { user } = useSelector((state) => state.auth);
   const location = useLocation();
-
   return user ? (
     <div className="w-full h-screen flex flex-col md:flex-row bg-gray-200 ">
       <div className="w-[20%] h-screen bg-white sticky top-0 hidden md:block">
-        <Sidebar/>
+        <Sidebar />
       </div>
-      <MobileSidebar/>
+      <MobileSidebar />
 
       <div className="w-full overflow-y-auto">
-        <Navbar /> 
-
+        <Navbar />
         <div className="p-2 2xl:px-10">
           <Outlet />
         </div>
         <div className="border-l border-white">
-          <Footer/>
+          <Footer />
         </div>
       </div>
-      
+
       <FloatingChat />
     </div>
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
-  );
+    <Navigate to='/login' state={{ from: location }} replace />
+  )
 };
 
 export default Layout;

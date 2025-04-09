@@ -6,7 +6,7 @@ const Textbox = React.forwardRef(
     return (
       <div className="w-full flex flex-col gap-1">
         {label && (
-          <label htmlFor={name} className="text-gray-200">
+          <label htmlFor={name} className="text-gray-800">
             {label}
           </label>
         )}
@@ -20,7 +20,7 @@ const Textbox = React.forwardRef(
             {...register}
             aria-invalid={error ? "true" : "false"}
             className={clsx(
-              "bg-transparent px-3 py-2.5 border border-gray-500 placeholder-white text-white outline-none text-base focus:ring-2 ring-blue-400",
+              "bg-transparent px-3 py-2.5 border border-gray-500 placeholder-white text-black outline-none text-base focus:ring-2 ring-blue-400",
               className
             )}
           />
