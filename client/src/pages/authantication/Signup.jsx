@@ -38,7 +38,7 @@ const SignUp = () => {
 
       const result = await registerUser(payload).unwrap();
       dispatch(setCredentials(result));
-      navigate("/log-in");
+      navigate("/login");
     } catch (error) {
       console.log(error);
       toast.error(error?.data?.message);
@@ -75,10 +75,10 @@ const SignUp = () => {
               name="fullName"
               label="Full Name"
               className="w-full rounded-lg text-white"
-              register={register("fullName", {
+              register={register("username", {
                 required: "Full name is required!",
               })}
-              error={errors.fullName?.message}
+              error={errors.username?.message}
             />
 
             {/* Email */}

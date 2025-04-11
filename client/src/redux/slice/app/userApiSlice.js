@@ -15,6 +15,15 @@ export const UserApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    registerUserTask: builder.mutation({ //mutation is used to post, put, update, delete
+      query: (data) => ({ //query is used to get the data or Get
+          url: `${AUTH_URL}/register`,
+          method: "POST",
+          body: data,
+          credentials: "include"
+      })
+  }),
+
     getTeamList: builder.query({
       //query is used to get request
       query: () => ({
@@ -78,5 +87,6 @@ export const {
   useUserActionMutation,
   useGetNotificationsQuery,
   useChangePasswordMutation,
-  useMarkNotiAsReadMutation
+  useMarkNotiAsReadMutation,
+  useRegisterUserMutation
 } = UserApiSlice;

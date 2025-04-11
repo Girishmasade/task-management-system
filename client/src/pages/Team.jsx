@@ -6,6 +6,7 @@ import { summary } from "../assets/data";
 import { getInitials } from "../utils/helper";
 import clsx from "clsx";
 import ConfirmatioDialog, { UserAction } from "../components/Dialogs";
+import { useDeleteUserMutation, useGetTeamListQuery, useUserActionMutation } from "../redux/slice/app/userApiSlice";
 import AddUser from "../components/ui/AddUSer";
 
 const Team = () => {
@@ -14,13 +15,53 @@ const Team = () => {
   const [openAction, setOpenAction] = useState(false);
   const [selected, setSelected] = useState(null);
 
-  const userActionHandler = () => {};
-  const deleteHandler = () => {};
+  const { data, isLoading, refetch } = useGetTeamListQuery();
+  const [deletedUser] = useDeleteUserMutation()
+  const [userAction] = useUserActionMutation()
+
+  const userActionHandler = async() => {
+    try {
+      const result = await userAction({
+        isActive: !selected?.isActive,
+          id: selected?._id
+      })
+      refetch()
+
+      toast.success(result.data.message)
+      setSelected(null)
+      setTimeout(() => {
+        setOpenAction(false)
+      }, 500)
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || error.message)
+    }
+  };
+  const deleteHandler = async() => {
+    try {
+      const result = await deletedUser(selected)
+      refetch() 
+
+      toast.success("User Deleted Successfully")
+      setSelected(null)
+      setTimeout(() => {
+        setOpenDialog(false)
+      }, 500)
+    } catch (error) {
+      console.log(err);
+      toast.error(err?.data?.message || err.message)
+    }
+  };
 
   const deleteClick = (id) => {
     setSelected(id);
     setOpenDialog(true);
   };
+
+  const userStatusClick = (el) => {
+    setSelected(el)
+    setOpenAction(true)
+  }
 
   const editClick = (el) => {
     setSelected(el);
@@ -29,7 +70,7 @@ const Team = () => {
 
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
-      <tr className='text-white text-left'>
+      <tr className='text-black text-left'>
         <th className='py-2'>Full Name</th>
         <th className='py-2'>Title</th>
         <th className='py-2'>Email</th>
@@ -40,7 +81,7 @@ const Team = () => {
   );
 
   const TableRow = ({ user }) => (
-    <tr className='border-b border-gray-200 text-gray-200 hover:bg-gray-400/10'>
+    <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
       <td className='p-2'>
         <div className='flex items-center gap-3'>
           <div className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-blue-700'>
@@ -58,9 +99,9 @@ const Team = () => {
 
       <td>
         <button
-          // onClick={() => userStatusClick(user)}
+          onClick={() => userStatusClick(user)}
           className={clsx(
-            "w-fit px-4 py-1 rounded-full text-black" ,
+            "w-fit px-4 py-1 rounded-full",
             user?.isActive ? "bg-blue-200" : "bg-yellow-100"
           )}
         >
@@ -88,9 +129,9 @@ const Team = () => {
 
   return (
     <>
-      <div className='w-full md:px-2 px-0 mb-6 bg-gray-600 py-2 rounded-md'>
+      <div className='w-full md:px-1 px-0 mb-6'>
         <div className='flex items-center justify-between mb-8'>
-          <Title title='Team Members'/>
+          <Title title='  Team Members' />
           <Button
             label='Add New User'
             icon={<IoMdAdd className='text-lg' />}
@@ -99,12 +140,12 @@ const Team = () => {
           />
         </div>
 
-        <div className='bg-gray-800 px-2 md:px-4 py-4 shadow-md rounded'>
+        <div className='bg-white px-2 md:px-4 py-4 shadow-md rounded'>
           <div className='overflow-x-auto'>
             <table className='w-full mb-5'>
               <TableHeader />
               <tbody>
-                {summary.users?.map((user, index) => (
+                {data?.map((user, index) => (
                   <TableRow key={index} user={user} />
                 ))}
               </tbody>

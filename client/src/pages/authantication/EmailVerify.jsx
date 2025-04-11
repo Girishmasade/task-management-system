@@ -1,89 +1,60 @@
-import React, { useState, useEffect } from "react";
-import OtpInput from "react-otp-input";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import OtpField from "react-otp-field";
+import { useVerifyEmailMutation } from "../../redux/slice/app/authApiSlice";
 
-const EmailVerify = () => {
+export default function EmailVerify() {
   const [otp, setOtp] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [timer, setTimer] = useState(30);
-  const [canResend, setCanResend] = useState(false);
+  const navigate = useNavigate();
+  const [verifyEmail] = useVerifyEmailMutation();
 
-  useEffect(() => {
-    if (timer > 0) {
-      const countdown = setTimeout(() => setTimer(timer - 1), 1000);
-      return () => clearTimeout(countdown);
-    } else {
-      setCanResend(true);
-    }
-  }, [timer]);
+  // ✅ Get user from Redux
+  const { user } = useSelector((state) => state.auth);
+  const userId = user?._id;
 
-  const handleVerifyOTP = () => {
-    if (otp === "123456") {
-      setIsAuthenticated(true);
-      alert("OTP Verified Successfully!");
-    } else {
-      alert("Invalid OTP! Please try again.");
+  const handleVerifyOtp = async () => {
+    try {
+      if (!userId) return alert("User ID missing");
+
+      const res = await verifyEmail({ userId, OTP: otp }).unwrap();
+
+      if (res?.isAccountVerified) {
+        alert(res.message);
+        navigate("/dashboard");
+      } else {
+        alert(res.message || "OTP verification failed.");
+      }
+    } catch (err) {
+      alert(err?.data?.message || "Failed to verify OTP.");
     }
   };
 
-  const handleResendOTP = () => {
-    setTimer(30);
-    setCanResend(false);
-    setOtp(""); 
-    alert("New OTP sent to your email!");
-  };
-
-  return isAuthenticated ? (
-    <div className="flex justify-center items-center h-screen bg-gray-900 text-white text-2xl">
-      ✅ Email Verified Successfully!
-    </div>
-  ) : (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900 p-4">
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white w-full max-w-md">
-        <h2 className="text-center text-2xl font-semibold mb-4">
-          Verify Your Email
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
+        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
+          Enter OTP
         </h2>
-        <p className="text-center text-gray-400 mb-6">
-          Enter the 6-digit OTP sent to your email
-        </p>
 
-        {/* ✅ OTP Input with Responsive Design */}
-        <div className="flex justify-center">
-          <OtpInput
-            value={otp}
-            onChange={setOtp}
-            numInputs={6}
-            renderSeparator={<span className="w-2"></span>}
-            renderInput={(props) => (
-              <input
-                {...props}
-                className="w-16 h-12 text-xl text-center border border-gray-500 bg-gray-700 text-white rounded-md outline-none focus:ring-2 ring-blue-400 transition"
-              />
-            )}
-          />
-        </div>
+        <OtpField
+          value={otp}
+          onChange={setOtp}
+          numInputs={6}
+          className="flex justify-center gap-3 mb-6"
+          inputProps={{
+            className:
+              "w-10 h-12 text-xl text-center border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg outline-none focus:ring-2 ring-blue-500",
+          }}
+        />
 
         <button
-          onClick={handleVerifyOTP}
-          className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-md w-full hover:bg-blue-600 transition"
+          onClick={handleVerifyOtp}
+          className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md font-medium transition"
         >
           Verify OTP
         </button>
-
-        <div className="mt-4 text-center">
-          {canResend ? (
-            <button
-              onClick={handleResendOTP}
-              className="text-blue-400 hover:text-blue-500 transition"
-            >
-              Resend OTP
-            </button>
-          ) : (
-            <p className="text-gray-400">Resend OTP in {timer} sec</p>
-          )}
-        </div>
       </div>
     </div>
   );
-};
-
-export default EmailVerify;
+}

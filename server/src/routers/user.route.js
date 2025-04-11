@@ -1,8 +1,19 @@
-// import {Router} from 'express'
-// import { getUserData } from '../controllers/user.controller.js'
+import {Router} from 'express'
+import { isAdminRoute, protectRoute } from "../middleware/authMiddleware.js";
+import { activateUserProfile, deleteUserProfile, getNotificationsList, getTeamList, getUserData, markNotificationRead, registerUserTask, updateUserProfile } from '../controllers/user.controller.js'
 
-// const userRoute = Router()
+const userRoute = Router()
 
-// userRoute.get('/data', getUserData)
+userRoute.get('/data', getUserData)
+userRoute.post("/registerusertask", registerUserTask);
+userRoute.get("/get-team", protectRoute, isAdminRoute, getTeamList);
+userRoute.get("/notifications", protectRoute, getNotificationsList);
+userRoute.put("/profile", protectRoute, updateUserProfile);
+userRoute.put("/read-noti", protectRoute, markNotificationRead);
 
-// export default userRoute
+userRoute
+  .route("/:id")
+  .put(protectRoute, isAdminRoute, activateUserProfile)
+  .delete(protectRoute, isAdminRoute, deleteUserProfile);
+
+export default userRoute

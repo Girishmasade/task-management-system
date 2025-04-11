@@ -8,6 +8,7 @@ import { Toaster } from "sonner";
 import Layout from "../components/lib/Layout";
 import Dashboard from "../pages/DashBoard";
 import SignUp from "../pages/authantication/Signup";
+import EmailVerify from "../pages/authantication/EmailVerify";
 
 const Router = () => {
   return (
@@ -28,6 +29,7 @@ const Router = () => {
 
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/verify-email' element={<EmailVerify />} />
       </Routes>
 
       <Toaster richColors />

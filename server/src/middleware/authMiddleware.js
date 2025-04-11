@@ -3,44 +3,53 @@ import User from "../models/user.model.js";
 
 const protectRoute = async (req, res, next) => {
   try {
-    let token = req.cookies?.token;
+    const token = req.cookies?.token;
 
-    if (token) {
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-
-      const resp = await User.findById(decodedToken.userId).select(
-        "isAdmin email"
-      );
-
-      req.user = {
-        email: resp.email,
-        isAdmin: resp.isAdmin,
-        userId: decodedToken.userId,
-      };
-
-      next();
-    } else {
-      return res
-        .status(401)
-        .json({ status: false, message: "Not authorized. Try login again." });
+    if (!token) {
+      return res.status(401).json({
+        status: false,
+        message: "Not authorized. Token missing. Please log in.",
+      });
     }
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(401)
-      .json({ status: false, message: "Not authorized. Try login again." });
-  }
-};
 
-const isAdminRoute = (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findById(decoded.userId).select("email isAdmin");
+
+    if (!user) {
+      return res.status(401).json({
+        status: false,
+        message: "User not found. Please log in again.",
+      });
+    }
+
+    req.user = {
+      userId: decoded.userId,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    };
+
     next();
-  } else {
+  } catch (error) {
+    console.error("JWT Verification Error:", error.message);
     return res.status(401).json({
       status: false,
-      message: "Not authorized as admin. Try login as admin.",
+      message: "Invalid or expired token. Please log in again.",
     });
   }
 };
 
-export { isAdminRoute, protectRoute };
+
+ const isAdminRoute = (req, res, next) => {
+  if (req.user?.isAdmin) {
+    return next();
+  }
+
+  return res.status(403).json({
+    status: false,
+    message: "Access denied. Admins only.",
+  });
+};
+
+
+export { protectRoute, isAdminRoute };

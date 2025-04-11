@@ -1,6 +1,6 @@
 import { apiSlice } from "../apiSlice";
 
-const AUTH_URL = "/user"
+const AUTH_URL = "/auth"
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -14,7 +14,25 @@ export const authApiSlice = apiSlice.injectEndpoints({
         }),
 
 
-             registerUser: builder.mutation({ //mutation is used to post, put, update, delete
+        sendVerifyOtp: builder.mutation({
+            query: ({ email }) => ({
+              url: `${AUTH_URL}/send-verify-otp`,
+              method: "POST",
+              body: { email }, 
+            }),
+          }),
+          
+
+          verifyEmail: builder.mutation({
+            query: (data) => ({
+              url: `${AUTH_URL}/verify-email`, 
+              method: "POST",                     
+              body: data,               
+            }),
+          }),
+          
+
+        registerUser: builder.mutation({ //mutation is used to post, put, update, delete
             query: (data) => ({ //query is used to get the data or Get
                 url: `${AUTH_URL}/register`,
                 method: "POST",
@@ -22,15 +40,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 credentials: "include"
             })
         }),
-
-        // registerUserTask: builder.mutation({ //mutation is used to post, put, update, delete
-        //     query: (data) => ({ //query is used to get the data or Get
-        //         url: `${AUTH_URL}/registerusertask`,
-        //         method: "POST",
-        //         body: data,
-        //         credentials: "include"
-        //     })
-        // }),
 
         logout: builder.mutation({ 
             query: () => ({ 
@@ -42,4 +51,4 @@ export const authApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const {useLoginMutation, useRegisterMutation, useRegisterUserMutation ,useLogoutMutation} = authApiSlice
+export const {useLoginMutation, useRegisterUserMutation, useLogoutMutation, useSendVerifyOtpMutation, useVerifyEmailMutation} = authApiSlice

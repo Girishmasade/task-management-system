@@ -5,12 +5,13 @@ import cookieParser from 'cookie-parser'
 import authRouter from './src/routers/auth.route.js'
 import connectDB from './src/Database/Database.js'
 import taskRouter from './src/routers/task.route.js'
+import userRoute from './src/routers/user.route.js'
 
 dotenv.config({
     path: './.env'
 })
 
-const allowedOrigins = ['http://localhost:5173']
+const allowedOrigins = ['http://localhost:3000']
 
 const app = express()
 app.use(express.json())
@@ -28,4 +29,5 @@ connectDB()
 // all Routers
 app.use('/api/auth', authRouter)
 app.use('/api/task', taskRouter)
+app.use('/api/user', userRoute)
 export {app}
