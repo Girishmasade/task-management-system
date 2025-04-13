@@ -12,7 +12,7 @@ import Title from "../components/Title";
 import Button from "../components/Button";
 import { PRIOTITYSTYELS, TASK_TYPE } from "../utils/helper";
 import { useDeleteRestoreTaskMutation, useGetAllTaskQuery } from "../redux/slice/app/taskApiSlice";
-import AddUser from "../components/ui/AddUSer";
+import Loading from "../components/Loader";
 import ConfirmatioDialog from "../components/Dialogs";
 
 const ICONS = {

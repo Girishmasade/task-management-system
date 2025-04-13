@@ -10,6 +10,8 @@ import Dashboard from "../pages/DashBoard";
 import SignUp from "../pages/authantication/Signup";
 import EmailVerify from "../pages/authantication/EmailVerify";
 import Tasks from "../pages/task/Task";
+import Chat from "../pages/Chat";
+import Meet from "../pages/Meet";
 
 const Router = () => {
   return (
@@ -26,6 +28,8 @@ const Router = () => {
           <Route path='/team' element={<Team />} />
           <Route path='/trashed' element={<Trash />} />
           <Route path='/task/:id' element={<TaskDetails />} />
+          <Route path='/chat' element={<Chat />} />
+          <Route path='/meet' element={<Meet />} />
         </Route>
 
         <Route path='/login' element={<Login />} />

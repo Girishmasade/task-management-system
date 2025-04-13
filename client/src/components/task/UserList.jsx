@@ -5,9 +5,10 @@ import { summary } from "../../assets/data";
 import clsx from "clsx";
 import { getInitials } from "../../utils/helper";
 import { MdCheck } from "react-icons/md";
+import { useGetTeamListQuery } from "../../redux/slice/app/authApiSlice";
 
 const UserList = ({ setTeam, team }) => {
-  const data = summary.users;
+  const {data, isLoading} = useGetTeamListQuery()
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   const handleChange = (el) => {

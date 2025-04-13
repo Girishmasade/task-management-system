@@ -6,7 +6,7 @@ import { summary } from "../assets/data";
 import { getInitials } from "../utils/helper";
 import clsx from "clsx";
 import ConfirmatioDialog, { UserAction } from "../components/Dialogs";
-import { useDeleteUserMutation, useGetTeamListQuery, useUserActionMutation } from "../redux/slice/app/userApiSlice";
+import { useDeleteUserMutation, useGetTeamListQuery, useUserActionMutation } from "../redux/slice/app/authApiSlice";
 import AddUser from "../components/ui/AddUSer";
 
 const Team = () => {

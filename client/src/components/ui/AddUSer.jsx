@@ -7,9 +7,9 @@ import Textbox from "../Textbox";
 import Loading from "../Loader";
 import Button from "../Button";
 import { toast } from "sonner";
-import { useUpdateUserMutation } from "../../redux/slice/app/userApiSlice";
+import { useUpdateUserMutation } from "../../redux/slice/app/authApiSlice";
 import { setCredentials } from "../../redux/slice/authSlice";
-import { useRegisterUserMutation } from "../../redux/slice/app/userApiSlice";
+import { useRegisterUserTaskMutation } from "../../redux/slice/app/authApiSlice";
 
 const AddUser = ({ open, setOpen, userData }) => {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const AddUser = ({ open, setOpen, userData }) => {
     formState: { errors },
   } = useForm({ defaultValues });
 
-  const [addNewUser, { isLoading }] = useRegisterUserMutation();
+  const [addNewUser, { isLoading }] = useRegisterUserTaskMutation();
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
 
   const handleOnSubmit = async (data) => {

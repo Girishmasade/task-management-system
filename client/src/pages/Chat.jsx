@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Activity = () => {
+const Chat = () => {
   return (
     <div>
-      Activity
+      
     </div>
   )
 }
 
-export default Activity
+export default Chat

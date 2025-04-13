@@ -1,17 +1,17 @@
-import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
-import { FaUser, FaUserLock } from "react-icons/fa";
-import { IoLogOutOutline } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { getInitials } from "../../utils/helper";
-import { toast } from "sonner";
-import AddUser from "./AddUSer";
-import {logout} from '../../redux/slice/authSlice';
+
+ import { Menu, Transition } from "@headlessui/react";
+ import { Fragment, useState } from "react";
+ import { FaUser, FaUserLock } from "react-icons/fa";
+ import { IoLogOutOutline } from "react-icons/io5";
+ import { useDispatch, useSelector } from "react-redux";
+ import { useNavigate } from "react-router-dom";
+ import { getInitials } from "../../utils/helper";
+ import { toast } from "sonner";
+ import AddUser from "./AddUSer";
+ import {logout} from '../../redux/slice/authSlice';
 
 const UserAvatar = () => {
   const [open, setOpen] = useState(false);
-  const [openPassword, setOpenPassword] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -63,6 +63,8 @@ const UserAvatar = () => {
                     </button>
                   )}
                 </Menu.Item>
+
+              
 
                 <Menu.Item>
                   {({ active }) => (

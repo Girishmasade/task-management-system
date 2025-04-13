@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
       trim: true,
@@ -16,10 +16,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    role: { type: String,
-       required: true,
-      enum: ["admin", "user"]
-    },
+    role: { type: String, required: true, enum: ["admin", "user"] },
+
+    tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],
+    isActive: { type: Boolean, required: true, default: true },
     isAdmin: {
       type: Boolean,
       default: false,

@@ -22,7 +22,7 @@ export default function EmailVerify() {
 
       const res = await verifyEmail({ userId, OTP: otp }).unwrap();
 
-      if (res?.isAccountVerified) {
+      if (res?.isActive) {
         toast.success(res.message);
         navigate("/dashboard");
       } else {

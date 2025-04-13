@@ -7,7 +7,6 @@ const UserInfo = ({ user }) => {
     <div className='px-4'>
       <Popover className='relative'>
       
-        {/* {({ open }) => ( */}
         <>
           <Popover.Button className='group inline-flex items-center outline-none'>
             <span>{getInitials(user?.name)}</span>

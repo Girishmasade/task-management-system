@@ -72,13 +72,13 @@ const SignUp = () => {
             <Textbox
               placeholder="John Doe"
               type="text"
-              name="fullName"
+              name="name"
               label="Full Name"
               className="w-full rounded-lg text-white"
-              register={register("username", {
+              register={register("name", {
                 required: "Full name is required!",
               })}
-              error={errors.username?.message}
+              error={errors.name?.message}
             />
 
             {/* Email */}
