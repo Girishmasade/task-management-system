@@ -20,14 +20,14 @@ export const tsaskpiSlice = apiSlice.injectEndpoints({
             })
         }),
 
-        createTask: builder.mutation({ 
+        createTask: builder.mutation({
             query: (data) => ({
-                url: `${TASK_URL}/create`,
-                method: "POST",
-                body: data,
-                credentials: "include",
-            })
-        }),
+              url: `${TASK_URL}/create`,  
+              method: "POST",
+              body: data,                 
+              credentials: "include",     
+            }),
+          }),
 
         duplicateTask: builder.mutation({ 
             query: (id) => ({

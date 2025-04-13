@@ -17,7 +17,7 @@ import { app } from "../../utils/firebase";
 import {
   useCreateTaskMutation,
   useUpdateTaskMutation,
-} from "../../redux/slice/app/taskApiSlice";
+} from "../../redux/slices/api/taskApiSlice";
 import { toast } from "sonner";
 import { dateFormatter } from "../../utils/helper";
 import { useSelector } from "react-redux";

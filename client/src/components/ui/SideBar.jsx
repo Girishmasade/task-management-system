@@ -10,6 +10,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { setOpenSidebar } from "../../redux/slice/authSlice";
 import clsx from "clsx";
+import { IoIosVideocam } from "react-icons/io";
+import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
+
+
 
 const linkData = [
   {
@@ -42,10 +46,24 @@ const linkData = [
     link: "team",
     icon: <FaUsers />,
   },
+
   {
     label: "Trash",
     link: "trashed",
     icon: <FaTrashAlt />,
+  },
+
+  {
+    label: "meet",
+    link: "meet",
+    icon: <IoIosVideocam />
+  },
+
+  {
+    label: "chat",
+    link: "chat",
+    icon: <IoChatbubbleEllipsesSharp />
+
   },
 ];
 
@@ -55,7 +73,7 @@ const Sidebar = () => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
 
-  const sidebarLinks = user?.isAdmin ? linkData : linkData.slice(0, 5);
+  const sidebarLinks = user?.isAdmin ? linkData : linkData.slice(0, 9);
 
   const closeSidebar = () => {
     dispatch(setOpenSidebar(false));

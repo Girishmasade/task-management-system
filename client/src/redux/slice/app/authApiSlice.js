@@ -30,6 +30,15 @@ export const authApiSlice = apiSlice.injectEndpoints({
               body: data,               
             }),
           }),
+
+          resendOtp: builder.mutation({
+            query: (data) => ({
+              url: "/auth/resend-otp",
+              method: "POST",
+              body: data,
+            }),
+          }),
+          
           
 
         registerUser: builder.mutation({ //mutation is used to post, put, update, delete
@@ -51,4 +60,4 @@ export const authApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const {useLoginMutation, useRegisterUserMutation, useLogoutMutation, useSendVerifyOtpMutation, useVerifyEmailMutation} = authApiSlice
+export const {useLoginMutation, useRegisterUserMutation, useLogoutMutation, useResendOtpMutation, useSendVerifyOtpMutation, useVerifyEmailMutation} = authApiSlice

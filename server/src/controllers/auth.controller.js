@@ -270,6 +270,36 @@ export const isAuthanticated = async (req, res) => {
   }
 }
 
+export const resendOtp = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.json({ success: false, message: "User ID is required" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    const newOTP = Math.floor(100000 + Math.random() * 900000).toString();
+
+    user.verifyOTP = newOTP;
+    user.verifyExpiryOTP = Date.now() + 10 * 60 * 1000; // 10 min expiry
+
+    await user.save();
+
+    // Here you can use nodemailer to send the OTP
+    // await sendEmail(user.email, "Your OTP Code", `Your OTP is ${newOTP}`);
+
+    return res.json({ success: true, message: "OTP resent successfully" });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};
+
+
 export const sendResetPassword  = async (req, res) => {
   try {
     const {email} = req.body

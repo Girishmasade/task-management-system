@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import OtpField from "react-otp-field";
-import { useVerifyEmailMutation } from "../../redux/slice/app/authApiSlice";
-
+import {
+  useVerifyEmailMutation,
+  useResendOtpMutation,
+} from "../../redux/slice/app/authApiSlice";
+import { toast } from "sonner";
 export default function EmailVerify() {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
   const [verifyEmail] = useVerifyEmailMutation();
+  const [resendOtp] = useResendOtpMutation();
 
-  // ✅ Get user from Redux
   const { user } = useSelector((state) => state.auth);
   const userId = user?._id;
 
@@ -20,13 +23,25 @@ export default function EmailVerify() {
       const res = await verifyEmail({ userId, OTP: otp }).unwrap();
 
       if (res?.isAccountVerified) {
-        alert(res.message);
+        toast.success(res.message);
         navigate("/dashboard");
       } else {
         alert(res.message || "OTP verification failed.");
       }
     } catch (err) {
       alert(err?.data?.message || "Failed to verify OTP.");
+    }
+  };
+
+  // Optional: Call this manually if needed
+  const handleResendOtp = async () => {
+    try {
+      if (!userId) return alert("User ID missing");
+
+      const res = await resendOtp({ userId }).unwrap();
+      alert(res.message);
+    } catch (err) {
+      alert(err?.data?.message || "Failed to resend OTP.");
     }
   };
 
@@ -54,6 +69,16 @@ export default function EmailVerify() {
         >
           Verify OTP
         </button>
+
+        {/* 🔒 Not showing resend button, only call manually or conditionally  */}
+        
+        <button
+          onClick={handleResendOtp}
+          className="mt-4 text-sm text-blue-500 hover:underline"
+        >
+          Resend OTP
+        </button>
+       
       </div>
     </div>
   );
