@@ -1,12 +1,13 @@
 export const formatDate = (date) => {
-  // Get the month, day, and year
+  if (!(date instanceof Date) || isNaN(date)) {
+    return "Invalid Date";
+  }
+  
   const month = date.toLocaleString("en-US", { month: "short" });
   const day = date.getDate();
   const year = date.getFullYear();
 
-  const formattedDate = `${day}-${month}-${year}`;
-
-  return formattedDate;
+  return `${day}-${month}-${year}`;
 };
 
 export function dateFormatter(dateString) {
@@ -20,18 +21,19 @@ export function dateFormatter(dateString) {
   const month = String(inputDate.getMonth() + 1).padStart(2, "0");
   const day = String(inputDate.getDate()).padStart(2, "0");
 
-  const formattedDate = `${year}-${month}-${day}`;
-  return formattedDate;
+  return `${year}-${month}-${day}`;
 }
 
 export function getInitials(fullName) {
-  const names = fullName.split(" ");
+  if (!fullName || typeof fullName !== "string") return "U"; // Default to 'U' for Unknown
 
-  const initials = names.slice(0, 2).map((name) => name[0].toUpperCase());
+  const names = fullName.trim().split(" ");
 
-  const initialsStr = initials.join("");
+  const initials = names
+    .slice(0, 2)
+    .map((name) => name[0]?.toUpperCase() || "");
 
-  return initialsStr;
+  return initials.join("") || "U"; // Default to 'U' if initials are empty
 }
 
 export const PRIOTITYSTYELS = {

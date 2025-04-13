@@ -16,6 +16,7 @@ import { BGS, PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils/helper";
 import UserInfo from "../components/ui/UserInfo";
 import { useGetDashboardStatusQuery } from "../redux/slice/app/taskApiSlice";
 import Loading from "../components/Loader";
+import Calender from "../components/Calender";
 
 const TaskTable = ({ tasks }) => {
   const ICONS = {
@@ -121,6 +122,7 @@ const Dashboard = () => {
       </div>
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
         <TaskTable tasks={data?.last10Task} />
+        <Calender/>
       </div>
     </div>
   );

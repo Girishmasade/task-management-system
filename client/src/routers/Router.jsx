@@ -9,6 +9,7 @@ import Layout from "../components/lib/Layout";
 import Dashboard from "../pages/DashBoard";
 import SignUp from "../pages/authantication/Signup";
 import EmailVerify from "../pages/authantication/EmailVerify";
+import Tasks from "../pages/task/Task";
 
 const Router = () => {
   return (
@@ -18,10 +19,10 @@ const Router = () => {
         <Route element={<Layout />}>
           <Route index path='/' element={<Navigate to='/dashboard' />} />
           <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/tasks' element={<Task />} />
-          <Route path='/completed/:status' element={<Task />} />
-          <Route path='/in-progress/:status' element={<Task />} />
-          <Route path='/todo/:status' element={<Task />} />
+          <Route path='/tasks' element={<Tasks />} />
+          <Route path='/completed/:status' element={<Tasks />} />
+          <Route path='/in-progress/:status' element={<Tasks />} />
+          <Route path='/todo/:status' element={<Tasks />} />
           <Route path='/team' element={<Team />} />
           <Route path='/trashed' element={<Trash />} />
           <Route path='/task/:id' element={<TaskDetails />} />

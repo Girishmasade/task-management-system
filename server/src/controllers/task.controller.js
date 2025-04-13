@@ -1,20 +1,23 @@
 import Notice from "../models/notification.model.js";
 import Task from "../models/task.model.js";
 import User from "../models/user.model.js";
+
 export const createTask = async (req, res) => {
   try {
     const { userId } = req.user;
+
     const { title, team, stage, date, priority, assets } = req.body;
 
-    if (!title || !team || !stage || !date || !priority) {
-      return res.status(400).json({ status: false, message: "All fields are required." });
+    let text = "New task has been assigned to you";
+    if (team?.length > 1) {
+      text = text + ` and ${team?.length - 1} others.`;
     }
 
-    let text = `New task has been assigned to you`;
-    if (team?.length > 1) {
-      text += ` and ${team.length - 1} others`;
-    }
-    text += `. The task priority is set as ${priority} priority, so check and act accordingly. The task date is ${new Date(date).toDateString()}. Thank you!`;
+    text =
+      text +
+      ` The task priority is set a ${priority} priority, so check and act accordingly. The task date is ${new Date(
+        date
+      ).toDateString()}. Thank you!!!`;
 
     const activity = {
       type: "assigned",
@@ -29,7 +32,7 @@ export const createTask = async (req, res) => {
       date,
       priority: priority.toLowerCase(),
       assets,
-      activities: [activity],
+      activities: activity,
     });
 
     await Notice.create({
@@ -38,13 +41,14 @@ export const createTask = async (req, res) => {
       task: task._id,
     });
 
-    return res.status(200).json({ status: true, task, message: "Task created successfully." });
+    res
+      .status(200)
+      .json({ status: true, task, message: "Task created successfully." });
   } catch (error) {
-    console.error("Create Task Error:", error.message);
-    return res.status(500).json({ status: false, message: error.message });
+    console.log(error);
+    return res.status(400).json({ status: false, message: error.message });
   }
 };
-
 
 export const duplicateTask = async (req, res) => {
   try {
