@@ -102,9 +102,13 @@ const Dashboard = () => {
 
   return (
     <div className='h-full py-4'>
-      <div className='grid grid-cols-1 md:grid-cols-4 gap-5'>
+      {/* responsive stats grid  */}
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5'>
         {stats.map(({ icon, bg, label, total }, index) => (
-          <div key={index} className='w-full h-32 bg-white p-5 shadow-md rounded-md flex items-center justify-between'>
+          <div
+            key={index}
+            className='w-full h-32 bg-white p-5 shadow-md rounded-md flex items-center justify-between'
+          >
             <div className='h-full flex flex-1 flex-col justify-between'>
               <p className='text-base text-gray-600'>{label}</p>
               <span className='text-2xl font-semibold'>{total}</span>
@@ -116,13 +120,17 @@ const Dashboard = () => {
           </div>
         ))}
       </div>
-      <div className='w-full bg-white my-16 p-4 rounded shadow-sm'>
+
+      {/* Fixed Width Chart */}
+      <div className='w-full bg-white my-10 p-4 rounded shadow-sm'>
         <h4 className='text-xl text-gray-600 font-semibold'>Chart by Priority</h4>
         <Chart data={data?.graphData} />
       </div>
+
+      {/* Fixed Layout: TaskTable + Calendar side by side on desktop only */}
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
         <TaskTable tasks={data?.last10Task} />
-        <Calender/>
+        <Calender />
       </div>
     </div>
   );
