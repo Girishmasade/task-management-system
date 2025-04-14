@@ -246,7 +246,8 @@ export const verifyEmail = async (req, res) => {
     await user.save()
     return res.json({
       success: true,
-      message: 'User verified successfully'
+      message: 'User verified successfully',
+      isActive: true,
     })
 
   } catch (error) {
