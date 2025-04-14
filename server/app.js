@@ -1,33 +1,32 @@
-import express from 'express'
-import dotenv from 'dotenv'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
-import authRouter from './src/routers/auth.route.js'
-import connectDB from './src/Database/Database.js'
-import taskRouter from './src/routers/task.route.js'
-// import userRoute from './src/routers/user.route.js'
+// app.js
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import authRouter from "./src/routers/auth.route.js";
+import taskRouter from "./src/routers/task.route.js";
+import meetingRouter from "./src/routers/meet.route.js"; // Import meeting routes
+import connectDB from "./src/Database/Database.js";
 
-dotenv.config({
-    path: './.env'
-})
+dotenv.config();
 
-const allowedOrigins = ['http://localhost:3000']
+const app = express();
 
-const app = express()
-app.use(express.json())
-app.use(cors({
-    origin: allowedOrigins,
-    credentials: true 
-}))
-app.use(cookieParser())
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3000", 
+    credentials: true,
+  })
+);
 
-// Database connection
 connectDB()
 
+// Use the routers
+app.use("/api/auth", authRouter);
+app.use("/api/task", taskRouter);
+app.use("/api/meet", meetingRouter); 
 
-
-// all Routers
-app.use('/api/auth', authRouter)
-app.use('/api/task', taskRouter)
-// app.use('/api/user', userRoute)
-export {app}
+export {app}; 

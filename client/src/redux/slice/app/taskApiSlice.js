@@ -14,7 +14,7 @@ export const tsaskpiSlice = apiSlice.injectEndpoints({
 
         getAllTask: builder.query({ 
             query: ({strQuery, isTrashed, search}) => ({
-                url: `${TASK_URL}/?stage=${strQuery}&isTrashed=${isTrashed}&search=${search}`,
+                url: `${TASK_URL}?stage=${strQuery}&isTrashed=${isTrashed}&search=${search}`,
                 method: "GET",
                 credentials: "include",
             })

@@ -142,6 +142,8 @@ export const logout = async (req, res) => {
     });
   }
 };
+
+
 export const sendVerifyOTP = async (req, res) => {
   try {
     const { email } = req.body;

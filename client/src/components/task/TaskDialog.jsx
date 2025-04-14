@@ -32,7 +32,7 @@ const TaskDialog = ({ task }) => {
       toast.success(res?.message);
       setTimeout(() => {
         setOpenDialog(false);
-        window.location.reload();
+        window.location.reload(); // This reload may be avoidable with a better approach
       }, 500);
     } catch (err) {
       console.error(err);
@@ -49,7 +49,7 @@ const TaskDialog = ({ task }) => {
       toast.success(res?.message);
       setTimeout(() => {
         setOpenDialog(false);
-        window.location.reload();
+        window.location.reload(); // Reloading might be better with a state update instead
       }, 500);
     } catch (err) {
       console.error(err);

@@ -22,18 +22,22 @@ const TASK_TYPE = {
 const Tasks = () => {
   const params = useParams();
   const [selected, setSelected] = useState(0);
-  const [open, setOpen] = useState(false); // Controls the Add Task modal
+  const [open, setOpen] = useState(false); 
 
   const status = params?.status || "";
 
-  const { data, isLoading } = useGetAllTaskQuery({
+  const { data, isLoading, isError, error } = useGetAllTaskQuery({
     strQuery: status,
     isTrashed: "",
     search: "",
   });
+  
+  // console.log("API Data:", data);  // Check if tasks are coming through
+  // console.log("Error:", error); 
 
   const tasks = data?.tasks ?? [];
-  
+
+  console.log("Tasks Data:", tasks); // Debugging tasks data
 
   if (isLoading) {
     return (
@@ -59,9 +63,7 @@ const Tasks = () => {
         )}
       </div>
 
-      {/* Tabs and Task Type Labels */}
       <Tabs tabs={TABS} setSelected={setSelected}>
-        {/* Task Type Labels — always visible */}
         <div className="w-full flex justify-between gap-4 md:gap-x-12 py-4">
           <TaskTitle label="To Do" className={TASK_TYPE.todo} />
           <TaskTitle label="In Progress" className={TASK_TYPE["in progress"]} />
