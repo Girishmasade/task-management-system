@@ -21,7 +21,7 @@ export default function EmailVerify() {
       if (!userId) return alert("User ID missing");
 
       const res = await verifyEmail({ userId, OTP: otp }).unwrap();
-
+      console.log(res)
       if (res?.isActive) {
         toast.success(res.message);
         navigate("/dashboard");
