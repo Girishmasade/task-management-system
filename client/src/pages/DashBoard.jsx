@@ -26,10 +26,10 @@ const TaskTable = ({ tasks }) => {
   };
 
   return (
-    <div className='w-full md:w-2/3 bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
+    <div className='w-full md:w-2/3 dark:bg-gray-900 bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
       <table className='w-full'>
         <thead className='border-b border-gray-300'>
-          <tr className='text-black text-left'>
+          <tr className='text-black dark:text-white text-left'>
             <th className='py-2'>Task Title</th>
             <th className='py-2'>Priority</th>
             <th className='py-2'>Team</th>
@@ -42,7 +42,7 @@ const TaskTable = ({ tasks }) => {
               <td className='py-2'>
                 <div className='flex items-center gap-2'>
                   <div className={clsx("w-4 h-4 rounded-full", TASK_TYPE[task.stage])} />
-                  <p className='text-base text-black'>{task.title}</p>
+                  <p className='text-base dark:text-white text-black'>{task.title}</p>
                 </div>
               </td>
               <td className='py-2'>
@@ -50,7 +50,7 @@ const TaskTable = ({ tasks }) => {
                   <span className={clsx("text-lg", PRIOTITYSTYELS[task.priority])}>
                     {ICONS[task.priority] || null}
                   </span>
-                  <span className='capitalize'>{task.priority}</span>
+                  <span className='capitalize dark:text-white'>{task.priority}</span>
                 </div>
               </td>
               <td className='py-2'>
@@ -69,7 +69,7 @@ const TaskTable = ({ tasks }) => {
                 </div>
               </td>
               <td className='py-2 hidden md:block'>
-                <span className='text-base text-gray-600'>
+                <span className='text-base text-gray-600 dark:text-white'>
                   {moment(task?.date).fromNow()}
                 </span>
               </td>
@@ -107,11 +107,11 @@ const Dashboard = () => {
         {stats.map(({ icon, bg, label, total }, index) => (
           <div
             key={index}
-            className='w-full h-32 bg-white p-5 shadow-md rounded-md flex items-center justify-between'
+            className='w-full h-32 dark:bg-gray-900 bg-white p-5 shadow-md rounded-md flex items-center justify-between'
           >
             <div className='h-full flex flex-1 flex-col justify-between'>
-              <p className='text-base text-gray-600'>{label}</p>
-              <span className='text-2xl font-semibold'>{total}</span>
+              <p className='text-base dark:text-white text-gray-600'>{label}</p>
+              <span className='text-2xl dark:text-white font-semibold'>{total}</span>
               <span className='text-sm text-gray-400'>110 last month</span>
             </div>
             <div className={clsx("w-10 h-10 rounded-full flex items-center justify-center text-white", bg)}>
@@ -122,8 +122,8 @@ const Dashboard = () => {
       </div>
 
       {/* Fixed Width Chart */}
-      <div className='w-full bg-white my-10 p-4 rounded shadow-sm'>
-        <h4 className='text-xl text-gray-600 font-semibold'>Chart by Priority</h4>
+      <div className='w-full dark:bg-gray-900 bg-white my-10 p-4 rounded shadow-sm'>
+        <h4 className='text-xl dark:text-white text-gray-600 font-semibold'>Chart by Priority</h4>
         <Chart data={data?.graphData} />
       </div>
 

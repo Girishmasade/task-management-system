@@ -31,7 +31,7 @@ export const MobileSidebar = () => {
         <div
           ref={mobileMenuRef}
           className={clsx(
-            "md:hidden fixed inset-0 bg-black/40 transition-all duration-700",
+            "md:hidden fixed inset-0 bg-black/40 transition-all duration-700 z-10",
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           )}
           onClick={closeSidebar} // close when clicked

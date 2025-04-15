@@ -16,7 +16,7 @@ export const Chart = ({data}) => {
     <ResponsiveContainer width={"100%"} height={300}>
       <BarChart width={150} height={40} data={chartData}>
         <XAxis dataKey='name' />
-        <YAxis />
+        <YAxis fill="#fff" />
         <Tooltip />
         <Legend />
         <CartesianGrid strokeDasharray='3 3' />

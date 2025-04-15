@@ -101,12 +101,12 @@ const deleteRestoreHandler = async () => {
   }
 
   const TableHeader = () => (
-    <thead className='border-b border-gray-300'>
+    <thead className='border-b dark:bg-gray-900 border-gray-300'>
       <tr className='text-black  text-left'>
-        <th className='py-2'>Task Title</th>
-        <th className='py-2'>Priority</th>
-        <th className='py-2'>Stage</th>
-        <th className='py-2 line-clamp-1'>Modified On</th>
+        <th className='py-2 dark:text-white'>Task Title</th>
+        <th className='py-2 dark:text-white'>Priority</th>
+        <th className='py-2 dark:text-white'>Stage</th>
+        <th className='py-2 dark:text-white line-clamp-1'>Modified On</th>
       </tr>
     </thead>
   );
@@ -118,7 +118,7 @@ const deleteRestoreHandler = async () => {
           <div
             className={clsx("w-4 h-4 rounded-full", TASK_TYPE[item.stage])}
           />
-          <p className='w-full line-clamp-2 text-base text-black'>
+          <p className='w-full line-clamp-2 text-base text-black dark:text-white'>
             {item?.title}
           </p>
         </div>
@@ -129,18 +129,18 @@ const deleteRestoreHandler = async () => {
           <span className={clsx("text-lg", PRIOTITYSTYELS[item?.priority])}>
             {ICONS[item?.priority]}
           </span>
-          <span className=''>{item?.priority}</span>
+          <span className='dark:text-white'>{item?.priority}</span>
         </div>
       </td>
 
-      <td className='py-2 capitalize text-center md:text-start'>
+      <td className='py-2 capitalize text-center md:text-start dark:text-white'>
         {item?.stage}
       </td>
-      <td className='py-2 text-sm'>{new Date(item?.date).toDateString()}</td>
+      <td className='py-2 text-sm dark:text-white'>{new Date(item?.date).toDateString()}</td>
 
       <td className='py-2 flex gap-1 justify-end'>
         <Button
-          icon={<MdOutlineRestore className='text-xl text-gray-500' />}
+          icon={<MdOutlineRestore className='text-xl dark:text-white text-gray-500' />}
           onClick={() => restoreClick(item._id)}
         />
         <Button
@@ -172,7 +172,7 @@ const deleteRestoreHandler = async () => {
             />
           </div>
         </div>
-        <div className='bg-white px-2 md:px-6 py-4 shadow-md rounded'>
+        <div className='bg-white px-2 md:px-6 py-4 shadow-md rounded dark:bg-gray-900'>
           <div className='overflow-x-auto'>
             <table className='w-full mb-5'>
               <TableHeader />
