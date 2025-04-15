@@ -71,19 +71,19 @@ const Team = () => {
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
-        <th className='py-2'>Full Name</th>
-        <th className='py-2'>Title</th>
-        <th className='py-2'>Email</th>
-        <th className='py-2'>Role</th>
-        <th className='py-2'>Active</th>
+        <th className='py-2 dark:text-white'>Full Name</th>
+        <th className='py-2 dark:text-white'>Title</th>
+        <th className='py-2 dark:text-white'>Email</th>
+        <th className='py-2 dark:text-white'>Role</th>
+        <th className='py-2 dark:text-white'>Active</th>
       </tr>
     </thead>
   );
 
   const TableRow = ({ user }) => (
-    <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
+    <tr className='border-b border-gray-200 dark:text-black text-gray-6+00 hover:bg-gray-400/10'>
       <td className='p-2'>
-        <div className='flex items-center gap-3'>
+        <div className='flex items-center gap-3 dark:text-white'>
           <div className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-blue-700'>
             <span className='text-xs md:text-sm text-center'>
               {getInitials(user.name)}
@@ -93,9 +93,9 @@ const Team = () => {
         </div>
       </td>
 
-      <td className='p-2'>{user.title}</td>
-      <td className='p-2'>{user.email || "user.emal.com"}</td>
-      <td className='p-2'>{user.role}</td>
+      <td className='p-2 dark:text-white'>{user.title}</td>
+      <td className='p-2 dark:text-white'>{user.email || "user.emal.com"}</td>
+      <td className='p-2 dark:text-white'>{user.role}</td>
 
       <td>
         <button
@@ -140,7 +140,7 @@ const Team = () => {
           />
         </div>
 
-        <div className='bg-white px-2 md:px-4 py-4 shadow-md rounded'>
+        <div className='bg-white dark:bg-gray-900 px-2 md:px-4 py-4 shadow-md rounded'>
           <div className='overflow-x-auto'>
             <table className='w-full mb-5'>
               <TableHeader />

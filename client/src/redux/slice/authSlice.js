@@ -6,6 +6,7 @@ const initialState = {
     : null,
 
   isSidebarOpen: false,
+  theme: localStorage.getItem("theme") || "light", // light is default for now
 };
 
 const authSlice = createSlice({
@@ -23,9 +24,17 @@ const authSlice = createSlice({
     setOpenSidebar: (state, action) => {
       state.isSidebarOpen = action.payload;
     },
+    toggleTheme: (state) => {
+      state.theme = state.theme === "light" ? "dark" : "light";
+      localStorage.setItem("theme", state.theme);
+    },
+    setTheme: (state, action) => {
+      state.theme = action.payload;
+      localStorage.setItem("theme", action.payload);
+    }
   },
 });
 
-export const { setCredentials, logout, setOpenSidebar } = authSlice.actions;
+export const { setCredentials, logout, setOpenSidebar, toggleTheme, setTheme } = authSlice.actions;
 
 export default authSlice.reducer;

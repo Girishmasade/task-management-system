@@ -10,7 +10,7 @@ const Layout = () => {
   const { user } = useSelector((state) => state.auth);
   const location = useLocation();
   return user ? (
-    <div className="w-full h-screen flex flex-col md:flex-row bg-gray-200 ">
+    <div className="w-full h-screen flex flex-col md:flex-row bg-gray-200 dark:bg-gray-800">
       <div className="w-[20%] h-screen bg-white sticky top-0 hidden md:block">
         <Sidebar />
       </div>

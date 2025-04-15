@@ -1,12 +1,16 @@
 import React from "react";
 import { MdOutlineSearch } from "react-icons/md";
+import { MdOutlineDarkMode } from "react-icons/md";
+import { MdOutlineLightMode } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { setOpenSidebar } from "../../redux/slice/authSlice";
+import { setOpenSidebar, toggleTheme } from "../../redux/slice/authSlice";
 import UserAvatar from "./UserAvatar";
 import NotificationPanel from "../NotificationPanel";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.auth);
+  const  theme  = useSelector((state) => state.auth.theme)
+  // console.log("Theme kya hai" ,theme)
   const dispatch = useDispatch();
 
   return (
@@ -31,6 +35,10 @@ const Navbar = () => {
       </div>
 
       <div className="flex gap-2 items-center">
+            <div onClick={() => dispatch(toggleTheme())} className="cursor-pointer text-2xl">
+            {theme === "light" ? <MdOutlineDarkMode color="white"/> : <MdOutlineLightMode color="white"/>}
+          </div>
+          
         <NotificationPanel />
         <UserAvatar />
       </div>
