@@ -27,8 +27,7 @@ export const meetingStart = async (req, res) => {
     await Notice.create({
       team: meeting.participants,
       text: "The meeting has started!",
-      task: meeting._id,
-      notiType: "alert",
+      task: meeting.roomId,
     });
 
     io.to(meeting.roomId).emit("meeting-started", { roomId: meeting.roomId });

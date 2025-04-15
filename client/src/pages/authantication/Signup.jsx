@@ -39,6 +39,7 @@ const SignUp = () => {
       const result = await registerUser(payload).unwrap();
       dispatch(setCredentials(result));
       navigate("/login");
+      toast.success("User Registered Successfully");
     } catch (error) {
       console.log(error);
       toast.error(error?.data?.message);

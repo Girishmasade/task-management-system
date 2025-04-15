@@ -71,8 +71,8 @@ const Tasks = () => {
         </div>
 
         {/* Board View */}
-        <BoardView tasks={tasks} />
       </Tabs>
+        <BoardView tasks={tasks} />
 
       {/* Add Task Modal */}
       <AddTask open={open} setOpen={setOpen} />

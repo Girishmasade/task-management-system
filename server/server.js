@@ -1,11 +1,23 @@
 import {app} from "./app.js";
 import http from "http";
 import { Server } from "socket.io";
+import cors from "cors";
 import socketHandler from "./src/sockets/meetingSocket.js";
 
 const server = http.createServer(app);
 
-const io = new Server(server);
+app.use(cors({
+  origin: "http://localhost:3000", // your frontend URL
+  credentials: true
+}));
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000", // your frontend origin
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
 
 socketHandler(io);
 
