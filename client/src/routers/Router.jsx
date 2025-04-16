@@ -13,6 +13,7 @@ import Tasks from "../pages/task/Task";
 import JoinMeeting from "../pages/Connection/JoinMeeting";
 import Chat from "../pages/Connection/Chat";
 import Meet from "../pages/Connection/Meet";
+import JoinChat from "../pages/Connection/JoinChat";
 
 const Router = () => {
   return (
@@ -30,6 +31,7 @@ const Router = () => {
           <Route path='/trashed' element={<Trash />} />
           <Route path='/task/:id' element={<TaskDetails />} />
           <Route path='/chat' element={<Chat />} />
+          <Route path='/chat/:roomId' element={<JoinChat />} />
           <Route path='/meet' element={<Meet />} />
           <Route path='/meet/:roomId' element={<JoinMeeting />} />
         </Route>

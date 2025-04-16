@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useRoomContext } from '../../context/RoomContext'
+import { toast } from 'sonner'
 
 const Meet = () => {
   const [roomId, setRoomId] = useState('')
@@ -16,12 +17,12 @@ const Meet = () => {
       
       navigate(`/meet/${roomId}`)
     } else {
-      alert('Please fill all fields')
+      toast.error('Please fill all fields')
     }
   }
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-black">
+    <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-800 to-green-600">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-md space-y-6">
       <h1 className='text-xl text-center text-white'>The Room Id is: <span className='underline font-semibold'>KSX3DE22</span></h1>
         <h2 className='text-2xl font-bold text-center text-gray-800 dark:text-white'>
@@ -50,7 +51,7 @@ const Meet = () => {
         />
           <button
           onClick={handleJoin}
-          className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition duration-200 font-semibold"
+          className="w-full bg-gradient-to-r from-green-500 to-cyan-400 text-black py-2 rounded-lg hover:bg-purple-700 transition duration-200 font-semibold"
         >
           Join Room
         </button>

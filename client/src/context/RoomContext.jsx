@@ -10,12 +10,19 @@ export const RoomProvider = ({ children }) => {
   const [cameraOn, setCameraOn] = useState(false);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [localStream, setLocalStream] = useState(null);
+  const [messages, setMessages] = useState(() => {
+    const saved = localStorage.getItem("chat-messages");
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
 
+  // Initialize socket & media stream
   useEffect(() => {
-    const socketInstance = io("http://localhost:5000"); // Replace with your server URL
+    const socketInstance = io("http://localhost:5000", {
+      transports: ["websocket"], // optional but more stable
+    });
     setSocket(socketInstance);
 
     const initStream = async () => {
@@ -41,6 +48,44 @@ export const RoomProvider = ({ children }) => {
     };
   }, []);
 
+  // Update localStorage when messages change
+  useEffect(() => {
+    localStorage.setItem("chat-messages", JSON.stringify(messages));
+  }, [messages]);
+
+  // Receive incoming messages
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("receive-message", (message) => {
+      setMessages((prev) => [...prev, message]);
+    });
+
+    return () => {
+      socket.off("receive-message");
+    };
+  }, [socket]);
+
+  // Join room
+  const joinRoom = () => {
+    if (userDetails.roomId && userDetails.name) {
+      socket.emit("join-room", userDetails);
+    }
+  };
+
+  // Send chat message
+  const sendMessage = (text) => {
+    const message = {
+      sender: userDetails.name,
+      roomId: userDetails.roomId,
+      text,
+      time: new Date().toLocaleTimeString()
+    };
+    socket.emit("send-message", message);
+    setMessages((prev) => [...prev, message]); // also add own message
+  };
+
+  // Mic toggle
   const toggleMic = () => {
     if (localStream) {
       const audioTrack = localStream.getAudioTracks()[0];
@@ -49,6 +94,7 @@ export const RoomProvider = ({ children }) => {
     }
   };
 
+  // Camera toggle
   const toggleCamera = () => {
     if (localStream) {
       const videoTrack = localStream.getVideoTracks()[0];
@@ -57,6 +103,7 @@ export const RoomProvider = ({ children }) => {
     }
   };
 
+  // Screen sharing toggle
   const toggleScreenSharing = () => {
     setIsScreenSharing(prev => !prev);
   };
@@ -79,7 +126,10 @@ export const RoomProvider = ({ children }) => {
         localStream,
         setLocalStream,
         localVideoRef,
-        remoteVideoRef
+        remoteVideoRef,
+        joinRoom,
+        sendMessage,
+        messages
       }}
     >
       {children}
