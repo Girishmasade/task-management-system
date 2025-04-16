@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRoomContext } from "../../context/RoomContext";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,12 @@ const Chat = () => {
   const [name, setName] = useState("");
   const [roomId, setRoomId] = useState("");
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (userDetails.name && userDetails.roomId) {
+      navigate(`/chat/${userDetails.roomId}`);
+    }
+  }, [userDetails, navigate]);
 
   const handleJoin = (e) => {
     e.preventDefault();

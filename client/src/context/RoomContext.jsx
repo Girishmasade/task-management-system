@@ -1,91 +1,107 @@
+// context/RoomContext.js
 import { createContext, useState, useContext, useRef, useEffect } from "react";
 import { io } from "socket.io-client";
 
 const RoomContext = createContext();
 
 export const RoomProvider = ({ children }) => {
-  const [userDetails, setUserDetails] = useState({ roomId: "", name: "", email: "" });
+  const [userDetails, setUserDetails] = useState(() => {
+    try {
+      const stored = localStorage.getItem("user-details");
+      return stored && stored !== "undefined"
+        ? JSON.parse(stored)
+        : { roomId: "", name: "", email: "" };
+    } catch (e) {
+      console.error("Failed to parse user-details:", e);
+      return { roomId: "", name: "", email: "" };
+    }
+  });
+
+  const [messages, setMessages] = useState(() => {
+    try {
+      const saved = localStorage.getItem("chat-messages");
+      return saved && saved !== "undefined" ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.error("Failed to parse chat-messages:", e);
+      return [];
+    }
+  });
+
   const [socket, setSocket] = useState(null);
+  const localVideoRef = useRef(null);
+  const remoteVideoRef = useRef(null);
+  const [localStream, setLocalStream] = useState(null);
   const [micOn, setMicOn] = useState(false);
   const [cameraOn, setCameraOn] = useState(false);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
-  const [localStream, setLocalStream] = useState(null);
-  const [messages, setMessages] = useState(() => {
-    const saved = localStorage.getItem("chat-messages");
-    return saved ? JSON.parse(saved) : [];
-  });
 
-  const localVideoRef = useRef(null);
-  const remoteVideoRef = useRef(null);
-
-  // Initialize socket & media stream
+  // Persist userDetails
   useEffect(() => {
-    const socketInstance = io("http://localhost:5000", {
-      transports: ["websocket"], // optional but more stable
-    });
-    setSocket(socketInstance);
+    localStorage.setItem("user-details", JSON.stringify(userDetails));
+  }, [userDetails]);
 
-    const initStream = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-        setLocalStream(stream);
-
-        if (localVideoRef.current) {
-          localVideoRef.current.srcObject = stream;
-        }
-
-        setMicOn(true);
-        setCameraOn(true);
-      } catch (error) {
-        console.error("Error accessing media devices:", error);
-      }
-    };
-
-    initStream();
-
-    return () => {
-      if (socketInstance) socketInstance.disconnect();
-    };
-  }, []);
-
-  // Update localStorage when messages change
+  // Save messages to localStorage
   useEffect(() => {
     localStorage.setItem("chat-messages", JSON.stringify(messages));
   }, [messages]);
 
-  // Receive incoming messages
+  // Connect socket
+  useEffect(() => {
+    const socketInstance = io("http://localhost:5000", {
+      transports: ["websocket"],
+    });
+    setSocket(socketInstance);
+
+    return () => {
+      socketInstance.disconnect();
+    };
+  }, []);
+
+  // Initialize media stream
+  useEffect(() => {
+    const initStream = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+        setLocalStream(stream);
+        if (localVideoRef.current) localVideoRef.current.srcObject = stream;
+        setMicOn(true);
+        setCameraOn(true);
+      } catch (err) {
+        console.error("Media error:", err);
+      }
+    };
+    initStream();
+  }, []);
+
+  // Handle incoming messages
   useEffect(() => {
     if (!socket) return;
-
     socket.on("receive-message", (message) => {
       setMessages((prev) => [...prev, message]);
     });
-
-    return () => {
-      socket.off("receive-message");
-    };
+    return () => socket.off("receive-message");
   }, [socket]);
 
-  // Join room
   const joinRoom = () => {
-    if (userDetails.roomId && userDetails.name) {
+    if (userDetails.roomId && userDetails.name && socket) {
       socket.emit("join-room", userDetails);
     }
   };
 
-  // Send chat message
   const sendMessage = (text) => {
     const message = {
       sender: userDetails.name,
       roomId: userDetails.roomId,
       text,
-      time: new Date().toLocaleTimeString()
+      time: new Date().toLocaleTimeString(),
     };
     socket.emit("send-message", message);
-    setMessages((prev) => [...prev, message]); // also add own message
+    setMessages((prev) => [...prev, message]);
   };
 
-  // Mic toggle
   const toggleMic = () => {
     if (localStream) {
       const audioTrack = localStream.getAudioTracks()[0];
@@ -94,7 +110,6 @@ export const RoomProvider = ({ children }) => {
     }
   };
 
-  // Camera toggle
   const toggleCamera = () => {
     if (localStream) {
       const videoTrack = localStream.getVideoTracks()[0];
@@ -103,9 +118,8 @@ export const RoomProvider = ({ children }) => {
     }
   };
 
-  // Screen sharing toggle
   const toggleScreenSharing = () => {
-    setIsScreenSharing(prev => !prev);
+    setIsScreenSharing((prev) => !prev);
   };
 
   return (
@@ -113,23 +127,19 @@ export const RoomProvider = ({ children }) => {
       value={{
         userDetails,
         setUserDetails,
+        joinRoom,
         socket,
+        sendMessage,
+        messages,
         micOn,
-        setMicOn,
-        toggleMic,
         cameraOn,
-        setCameraOn,
+        toggleMic,
         toggleCamera,
         isScreenSharing,
-        setIsScreenSharing,
         toggleScreenSharing,
         localStream,
-        setLocalStream,
         localVideoRef,
         remoteVideoRef,
-        joinRoom,
-        sendMessage,
-        messages
       }}
     >
       {children}

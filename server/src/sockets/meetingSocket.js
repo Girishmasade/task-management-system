@@ -44,6 +44,13 @@ export function setupSocket(server){
       
     });
 
+    // Send MEssage
+    socket.on('send-message', (data) => {
+      console.log('📨 New chat message:', data);
+      socket.to(data.roomId).emit("receive_message", data);
+        // Broadcast to everyone in room
+    });
+
     // Leave Meeting
     socket.on("leave-room", ({ roomId }) => {
       socket.leave(roomId);
