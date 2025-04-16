@@ -10,8 +10,9 @@ import Dashboard from "../pages/DashBoard";
 import SignUp from "../pages/authantication/Signup";
 import EmailVerify from "../pages/authantication/EmailVerify";
 import Tasks from "../pages/task/Task";
-import Chat from "../pages/Chat";
-import Meet from "../pages/Meet";
+import JoinMeeting from "../pages/Connection/JoinMeeting";
+import Chat from "../pages/Connection/Chat";
+import Meet from "../pages/Connection/Meet";
 
 const Router = () => {
   return (
@@ -30,6 +31,7 @@ const Router = () => {
           <Route path='/task/:id' element={<TaskDetails />} />
           <Route path='/chat' element={<Chat />} />
           <Route path='/meet' element={<Meet />} />
+          <Route path='/meet/:roomId' element={<JoinMeeting />} />
         </Route>
 
         <Route path='/login' element={<Login />} />

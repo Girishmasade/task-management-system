@@ -5,7 +5,6 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./src/routers/auth.route.js";
 import taskRouter from "./src/routers/task.route.js";
-import meetingRouter from "./src/routers/meet.route.js"; // Import meeting routes
 import connectDB from "./src/Database/Database.js";
 
 dotenv.config();
@@ -17,7 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000", 
+    origin: ["http://localhost:3000", "http://localhost:3001"],
     credentials: true,
   })
 );
@@ -27,6 +26,9 @@ connectDB()
 // Use the routers
 app.use("/api/auth", authRouter);
 app.use("/api/task", taskRouter);
-app.use("/api/meet", meetingRouter); 
+
+app.get('/', (req, res) => {
+  res.send("webrtc video call backend server")
+})
 
 export {app}; 

@@ -1,43 +1,65 @@
-const socketHandler = (io) => {
+import {Server} from 'socket.io';
+
+export function setupSocket(server){
+  const io = new Server(server, {
+    cors:{
+      origin: "*",
+      methods: ["GET", "POST"]
+    }
+  })
+
   io.on("connection", (socket) => {
-    console.log("User connected:", socket.id);
+    console.log("User connected", socket.id);
 
-    // Join a meeting room
-    socket.on("join-room", ({ roomId, user }) => {
-      socket.join(roomId);
-      console.log(`${user.name} joined room: ${roomId}`);
-      socket.to(roomId).emit("user-joined", { user, socketId: socket.id });
+    // For Joining a meeting Room
+
+    socket.on("join-room", ({roomId, name, email}) => {
+      socket.join(roomId)
+      socket.to(roomId).emit("user-joined", {id: socket.id, name, email})
+      console.log(`User joined, ${roomId}, ${email}, ${name}, ${socket.id}`);
+    })
+
+    socket.on("sending-signal", ({userToSignal, signal, callerId}) => {
+      io.to(userToSignal).emit("user-joined-back", {signal, callerId})
+    })
+
+    socket.on("returning-signal", ({signal, to}) => {
+      io.to(to).emit("receiving-returned-signal", {signal, id: socket.id})
+    })
+
+    // Screen Sharing Toggle
+    socket.on("toggle-screen-share", ({ roomId, isSharing }) => {
+      socket.to(roomId).emit("screen-share-toggled", { id: socket.id, isSharing });
     });
 
-    // Handle message sending
-    socket.on("send-message", ({ roomId, message, sender }) => {
-      io.to(roomId).emit("receive-message", { message, sender });
+    // Mic Toggle
+    socket.on("toggle-mic", ({ roomId, isMicOn }) => {
+      socket.to(roomId).emit("mic-toggled", { id: socket.id, isMicOn });
     });
 
-    // Mic toggle
-    socket.on("toggle-mic", ({ roomId, userId, isMicOn }) => {
-      socket.to(roomId).emit("mic-toggled", { userId, isMicOn });
+    // Camera Toggle
+    socket.on("toggle-camera", ({ roomId, isCameraOn }) => {
+      socket.to(roomId).emit("camera-toggled", { id: socket.id, isCameraOn });
+      console.log(`User ${socket.id} toggled camera: ${isCameraOn}`);
+      
     });
 
-    // Video toggle
-    socket.on("toggle-video", ({ roomId, userId, isVideoOn }) => {
-      socket.to(roomId).emit("video-toggled", { userId, isVideoOn });
+    // Leave Meeting
+    socket.on("leave-room", ({ roomId }) => {
+      socket.leave(roomId);
+      socket.to(roomId).emit("user-left", { id: socket.id });
+      console.log(`🚪 User ${socket.id} left room ${roomId}`);
     });
 
-    // Screen sharing
-    socket.on("start-screen-share", ({ roomId, userId }) => {
-      socket.to(roomId).emit("screen-share-started", { userId });
-    });
+    // Disconnect
 
-    socket.on("stop-screen-share", ({ roomId, userId }) => {
-      socket.to(roomId).emit("screen-share-stopped", { userId });
-    });
-
-    // Disconnecting
     socket.on("disconnect", () => {
       console.log("User disconnected:", socket.id);
-    });
-  });
-};
+      socket.rooms.forEach((roomId) => {
+        socket.to(roomId).emit("user-disconnected", { id: socket.id });
+      })
+    })
 
-export default socketHandler;
+  })
+  
+}
