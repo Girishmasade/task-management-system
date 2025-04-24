@@ -26,10 +26,10 @@ const TaskTable = ({ tasks }) => {
   };
 
   return (
-    <div className='w-full md:w-2/3 bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
+    <div className='w-full md:w-2/3 bg-gray-800 px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
       <table className='w-full'>
-        <thead className='border-b border-gray-300'>
-          <tr className='text-black text-left'>
+        <thead className='border-b border-gray-700'>
+          <tr className='text-white text-left'>
             <th className='py-2'>Task Title</th>
             <th className='py-2'>Priority</th>
             <th className='py-2'>Team</th>
@@ -38,11 +38,11 @@ const TaskTable = ({ tasks }) => {
         </thead>
         <tbody>
           {tasks?.map((task, id) => (
-            <tr key={id} className='border-b border-gray-300 text-gray-600 hover:bg-gray-300/10'>
+            <tr key={id} className='border-b border-gray-700 text-gray-400 hover:bg-gray-700'>
               <td className='py-2'>
                 <div className='flex items-center gap-2'>
                   <div className={clsx("w-4 h-4 rounded-full", TASK_TYPE[task.stage])} />
-                  <p className='text-base text-black'>{task.title}</p>
+                  <p className='text-base text-white'>{task.title}</p>
                 </div>
               </td>
               <td className='py-2'>
@@ -69,7 +69,7 @@ const TaskTable = ({ tasks }) => {
                 </div>
               </td>
               <td className='py-2 hidden md:block'>
-                <span className='text-base text-gray-600'>
+                <span className='text-base text-gray-400'>
                   {moment(task?.date).fromNow()}
                 </span>
               </td>
@@ -101,18 +101,18 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className='h-full py-4'>
+    <div className='h-full py-4 bg-gray-900'>
       {/* responsive stats grid  */}
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5'>
         {stats.map(({ icon, bg, label, total }, index) => (
           <div
             key={index}
-            className='w-full h-32 bg-white p-5 shadow-md rounded-md flex items-center justify-between'
+            className='w-full h-32 bg-gray-800 p-5 shadow-md rounded-md flex items-center justify-between'
           >
             <div className='h-full flex flex-1 flex-col justify-between'>
-              <p className='text-base text-gray-600'>{label}</p>
-              <span className='text-2xl font-semibold'>{total}</span>
-              <span className='text-sm text-gray-400'>110 last month</span>
+              <p className='text-base text-gray-300'>{label}</p>
+              <span className='text-2xl font-semibold text-white'>{total}</span>
+              <span className='text-sm text-gray-500'>110 last month</span>
             </div>
             <div className={clsx("w-10 h-10 rounded-full flex items-center justify-center text-white", bg)}>
               {icon}
@@ -122,8 +122,8 @@ const Dashboard = () => {
       </div>
 
       {/* Fixed Width Chart */}
-      <div className='w-full bg-white my-10 p-4 rounded shadow-sm'>
-        <h4 className='text-xl text-gray-600 font-semibold'>Chart by Priority</h4>
+      <div className='w-full bg-gray-800 my-10 p-4 rounded shadow-sm'>
+        <h4 className='text-xl text-gray-300 font-semibold'>Chart by Priority</h4>
         <Chart data={data?.graphData} />
       </div>
 

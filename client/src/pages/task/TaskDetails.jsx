@@ -18,7 +18,7 @@ import Tabs from "../../components/Tabs";
 import { PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../../utils/helper";
 import Loading from "../../components/Loader";
 import Button from "../../components/Button";
-import { useGetSingleTaskQuery } from "../../redux/slice/app/taskApiSlice";
+import { useGetSingleTaskQuery, usePostTaskActivityMutation } from "../../redux/slice/app/taskApiSlice";
 // 
 
 const assets = [
@@ -89,7 +89,7 @@ const act_types = [
 
 const TaskDetails = () => {
   const { id } = useParams();
-  const {data, isLoading, refetch} = useGetSingleTaskQuery()
+  const {data, isLoading, refetch} = useGetSingleTaskQuery(id)
   const [selected, setSelected] = useState(0);
   const task = data?.task
 
@@ -108,7 +108,7 @@ const TaskDetails = () => {
       <Tabs tabs={TABS} setSelected={setSelected}>
         {selected === 0 ? (
           <>
-            <div className='w-full flex flex-col md:flex-row gap-5 2xl:gap-8 bg-white shadow-md p-8 overflow-y-auto'>
+            <div className='w-full flex flex-col md:flex-row gap-5 2xl:gap-8 bg-slate-700 text-white shadow-md p-8 overflow-y-auto'>
               {/* LEFT */}
               <div className='w-full md:w-1/2 space-y-8'>
                 <div className='flex items-center gap-5'>
@@ -127,14 +127,14 @@ const TaskDetails = () => {
                     <div
                       className={clsx(
                         "w-4 h-4 rounded-full",
-                        TASK_TYPE[task.stage]
+                        TASK_TYPE[task?.stage]
                       )}
                     />
                     <span className='text-black uppercase'>{task?.stage}</span>
                   </div>
                 </div>
 
-                <p className='text-gray-500'>
+                <p className='text-gray-200'>
                   Created At: {new Date(task?.date).toDateString()}
                 </p>
 
@@ -153,7 +153,7 @@ const TaskDetails = () => {
                 </div>
 
                 <div className='space-y-4 py-6'>
-                  <p className='text-gray-600 font-semibold test-sm'>
+                  <p className='text-gray-200 font-semibold test-sm'>
                     TASK TEAM
                   </p>
                   <div className='space-y-3'>
@@ -241,7 +241,7 @@ const Activities = ({ activity, id, refetch }) => {
   const [selected, setSelected] = useState(act_types[0]);
   const [text, setText] = useState("");
 
-  const [postActivity,, {isLoading}] = usePostTaskActivityMutation()
+  const [postActivity, {isLoading}] = usePostTaskActivityMutation()
   const handleSubmit = async () => {
     try {
       const activityData = {
@@ -263,7 +263,7 @@ const Activities = ({ activity, id, refetch }) => {
 
   const Card = ({ item }) => {
     return (
-      <div className='flex space-x-4'>
+      <div className='flex space-x-4 '>
         <div className='flex flex-col items-center flex-shrink-0'>
           <div className='w-10 h-10 flex items-center justify-center'>
             {TASKTYPEICON[item?.type]}
@@ -279,18 +279,18 @@ const Activities = ({ activity, id, refetch }) => {
             <span className='capitalize'>{item?.type}</span>
             <span className='text-sm'>{moment(item?.date).fromNow()}</span>
           </div>
-          <div className='text-gray-700'>{item?.activity}</div>
+          <div className='text-gray-200'>{item?.activity}</div>
         </div>
       </div>
     );
   };
 
   return (
-    <div className='w-full flex gap-10 2xl:gap-20 min-h-screen px-10 py-8 bg-white shadow rounded-md justify-between overflow-y-auto'>
+    <div className='w-full flex gap-10 2xl:gap-20 min-h-screen px-10 py-8 bg-slate-700 text-white shadow rounded-md justify-between overflow-y-auto'>
       <div className='w-full md:w-1/2'>
-        <h4 className='text-gray-600 font-semibold text-lg mb-5'>Activities</h4>
+        <h4 className='text-gray-300 font-semibold text-lg mb-5'>Activities</h4>
 
-        <div className='w-full'>
+        <div className='w-full text-gray-300'>
           {activity?.map((el, index) => (
             <Card
               key={index}
@@ -302,7 +302,7 @@ const Activities = ({ activity, id, refetch }) => {
       </div>
 
       <div className='w-full md:w-1/3'>
-        <h4 className='text-gray-600 font-semibold text-lg mb-5'>
+        <h4 className='text-gray-200 font-semibold text-lg mb-5'>
           Add Activity
         </h4>
         <div className='w-full flex flex-wrap gap-5'>
@@ -322,7 +322,7 @@ const Activities = ({ activity, id, refetch }) => {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder='Type ......'
-            className='bg-white w-full mt-10 border border-gray-300 outline-none p-4 rounded-md focus:ring-2 ring-blue-500'
+            className='bg-transparent w-full mt-10 border border-gray-300 outline-none p-4 rounded-md focus:ring-2 ring-blue-500'
           ></textarea>
           {isLoading ? (
             <Loading />
@@ -331,7 +331,7 @@ const Activities = ({ activity, id, refetch }) => {
               type='button'
               label='Submit'
               onClick={handleSubmit}
-              className='bg-blue-600 text-white rounded'
+              className='bg-gradient-to-r from-green-500 to-cyan-400 text-white rounded cursor-pointer'
             />
           )}
         </div>

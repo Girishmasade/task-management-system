@@ -203,8 +203,8 @@ export const getTasks = async (req, res) => {
 
     let query = { isTrashed: isTrashed === "true" };
 
-    if (stage) {
-      query.stage = stage;
+    if (stage && stage.toLowerCase() !== "all") {
+      query.stage = stage.toLowerCase();
     }
 
     const tasks = await Task.find(query)
@@ -223,6 +223,7 @@ export const getTasks = async (req, res) => {
     return res.status(400).json({ status: false, message: error.message });
   }
 };
+
 
 
 export const getTask = async (req, res) => {

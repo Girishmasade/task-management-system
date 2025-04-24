@@ -48,7 +48,7 @@ const Tasks = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-slate-600 min-h-screen p-2">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <Title title={status ? `${status} Tasks` : "Tasks"} />
@@ -71,8 +71,8 @@ const Tasks = () => {
         </div>
 
         {/* Board View */}
-      </Tabs>
         <BoardView tasks={tasks} />
+      </Tabs>
 
       {/* Add Task Modal */}
       <AddTask open={open} setOpen={setOpen} />

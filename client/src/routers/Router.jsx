@@ -14,6 +14,7 @@ import JoinMeeting from "../pages/Connection/JoinMeeting";
 import Chat from "../pages/Connection/Chat";
 import Meet from "../pages/Connection/Meet";
 import JoinChat from "../pages/Connection/JoinChat";
+import ForgetPass from "../pages/authantication/ForgetPass";
 
 const Router = () => {
   return (
@@ -39,6 +40,7 @@ const Router = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/verify-email' element={<EmailVerify />} />
+        <Route path='/forget-pass' element={<ForgetPass />} />
       </Routes>
 
       <Toaster richColors />

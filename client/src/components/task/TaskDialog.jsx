@@ -1,23 +1,4 @@
-import React, { Fragment, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Menu, Transition } from "@headlessui/react";
-import { toast } from "sonner";
-
-import { AiTwotoneFolderOpen } from "react-icons/ai";
-import { BsThreeDots } from "react-icons/bs";
-import { HiDuplicate } from "react-icons/hi";
-import { MdAdd, MdOutlineEdit } from "react-icons/md";
-import { RiDeleteBin6Line } from "react-icons/ri";
-
-import AddTask from "./AddTask";
-import AddSubTask from "./AddSubTask";
-import ConfirmatioDialog from "../Dialogs";
-import {
-  useDuplicateTaskMutation,
-  useTrashTaskMutation,
-} from "../../redux/slice/app/taskApiSlice";
-
-const TaskDialog = ({ task }) => {
+const TaskDialog = ({ task, user, onTaskUpdated }) => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openSubtask, setOpenSubtask] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -30,10 +11,8 @@ const TaskDialog = ({ task }) => {
     try {
       const res = await duplicateTask(task._id).unwrap();
       toast.success(res?.message);
-      setTimeout(() => {
-        setOpenDialog(false);
-        window.location.reload(); // This reload may be avoidable with a better approach
-      }, 500);
+      setOpenDialog(false);
+      if (onTaskUpdated) onTaskUpdated();
     } catch (err) {
       console.error(err);
       toast.error(err?.data?.message || err.message || "Failed to duplicate task");
@@ -42,42 +21,42 @@ const TaskDialog = ({ task }) => {
 
   const deleteHandler = async () => {
     try {
-      const res = await deleteTask({
-        id: task._id,
-        isTrashed: "trash",
-      }).unwrap();
+      const res = await deleteTask({ id: task._id, isTrashed: "trash" }).unwrap();
       toast.success(res?.message);
-      setTimeout(() => {
-        setOpenDialog(false);
-        window.location.reload(); // Reloading might be better with a state update instead
-      }, 500);
+      setOpenDialog(false);
+      if (onTaskUpdated) onTaskUpdated();
     } catch (err) {
       console.error(err);
       toast.error(err?.data?.message || err.message || "Failed to delete task");
     }
   };
 
+  // Task menu items
   const items = [
     {
       label: "Open Task",
       icon: <AiTwotoneFolderOpen className="mr-2 h-5 w-5" />,
       onClick: () => navigate(`/task/${task._id}`),
     },
-    {
-      label: "Edit",
-      icon: <MdOutlineEdit className="mr-2 h-5 w-5" />,
-      onClick: () => setOpenEdit(true),
-    },
-    {
-      label: "Add Sub-Task",
-      icon: <MdAdd className="mr-2 h-5 w-5" />,
-      onClick: () => setOpenSubtask(true),
-    },
-    {
-      label: "Duplicate",
-      icon: <HiDuplicate className="mr-2 h-5 w-5" />,
-      onClick: duplicateHandler,
-    },
+    ...(user?.isAdmin
+      ? [
+          {
+            label: "Edit",
+            icon: <MdOutlineEdit className="mr-2 h-5 w-5" />,
+            onClick: () => setOpenEdit(true),
+          },
+          {
+            label: "Add Sub-Task",
+            icon: <MdAdd className="mr-2 h-5 w-5" />,
+            onClick: () => setOpenSubtask(true),
+          },
+          {
+            label: "Duplicate",
+            icon: <HiDuplicate className="mr-2 h-5 w-5" />,
+            onClick: duplicateHandler,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -115,21 +94,23 @@ const TaskDialog = ({ task }) => {
               ))}
             </div>
 
-            <div>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    onClick={() => setOpenDialog(true)}
-                    className={`${
-                      active ? "bg-red-500 text-white" : "text-red-600"
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                  >
-                    <RiDeleteBin6Line className="mr-2 h-5 w-5" />
-                    Delete
-                  </button>
-                )}
-              </Menu.Item>
-            </div>
+            {user?.isAdmin && (
+              <div>
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      onClick={() => setOpenDialog(true)}
+                      className={`${
+                        active ? "bg-red-500 text-white" : "text-red-600"
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                    >
+                      <RiDeleteBin6Line className="mr-2 h-5 w-5" />
+                      Delete
+                    </button>
+                  )}
+                </Menu.Item>
+              </div>
+            )}
           </Menu.Items>
         </Transition>
       </Menu>

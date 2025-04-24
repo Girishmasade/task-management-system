@@ -4,21 +4,22 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Tabs({ tabs, setSelected }) {
+export default function Tabs({ tabs, setSelected, children }) {
   return (
-    <div className="w-full">
+    <div className='w-full px-1 sm:px-0'>
       <Tab.Group>
-        <Tab.List className="flex space-x-4 border-b border-gray-300 dark:border-gray-700">
+        <Tab.List className='flex space-x-6 rounded-xl p-1 '>
           {tabs.map((tab, index) => (
             <Tab
               key={tab.title}
               onClick={() => setSelected(index)}
               className={({ selected }) =>
                 classNames(
-                  "flex items-center text-black gap-2 px-4 py-2 text-sm font-medium outline-none transition-all duration-200",
+                  "w-fit flex items-center outline-none gap-2 px-3 py-2.5 text-base font-medium leading-5 bg-cyan-800",
+
                   selected
-                    ? "border-b-2 border-blue-600 text-blue-900 dark:text-blue-700"
-                    : "text-gray-700 hover:text-blue-600 dark:text-gray-900 dark:hover:text-blue-400"
+                    ? "text-green-200  border-b-2 border-blue-600"
+                    : "text-gray-200  hover:text-red-800"
                 )
               }
             >
@@ -27,6 +28,7 @@ export default function Tabs({ tabs, setSelected }) {
             </Tab>
           ))}
         </Tab.List>
+        <Tab.Panels className='w-full mt-2'>{children}</Tab.Panels>
       </Tab.Group>
     </div>
   );
