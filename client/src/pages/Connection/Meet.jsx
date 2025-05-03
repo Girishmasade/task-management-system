@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useRoomContext } from '../../context/RoomContext'
 import { toast } from 'sonner'
 
@@ -9,6 +9,8 @@ const Meet = () => {
   const [email, setEmail] = useState('')
   const { setUserDetails } = useRoomContext()
   const navigate = useNavigate()
+  const location = useLocation()
+  const task = location?.state?.task
 
   const handleJoin = () => {
     if (roomId && name && email) {
@@ -24,7 +26,7 @@ const Meet = () => {
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-800 to-green-600">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-md space-y-6">
-      <h1 className='text-xl text-center text-white'>The Room Id is: <span className='underline font-semibold'>KSX3DE22</span></h1>
+      <h1 className='text-xl text-center text-white'>The Room Id is: <span className='underline font-semibold'>{task?.title}</span></h1>
         <h2 className='text-2xl font-bold text-center text-gray-800 dark:text-white'>
           Join a Meeting
         </h2>

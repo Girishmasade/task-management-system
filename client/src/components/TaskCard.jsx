@@ -15,6 +15,9 @@ import UserInfo from "./ui/UserInfo";
 import { IoMdAdd } from "react-icons/io";
 import AddSubTask from "./task/AddSubTask";
 import { useNavigate } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
+import { FaVideo } from "react-icons/fa";
+
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
@@ -35,6 +38,9 @@ const TaskCard = ({ task, onTaskUpdated }) => {
     if (!user?.isAdmin) navigate(`/task/${task._id}`);
   };
 
+  const handleMeetTask = () => {
+  navigate('/meet', {state: {task}})
+  };
   return (
     <>
       <div className="w-full h-fit bg-gray-800 text-white shadow-md p-4 rounded relative group">
@@ -53,12 +59,20 @@ const TaskCard = ({ task, onTaskUpdated }) => {
           {user?.isAdmin ? (
             <TaskDialog task={task} onTaskUpdated={onTaskUpdated} />
           ) : (
-            <button
+         <div className="flex gap-4">
+             <button
               onClick={handleOpenTask}
-              className="text-sm text-blue-400 hover:underline"
+              className="text-2xl text-blue-400 hover:underline"
             >
-              Open Task
+              <FaEye />
             </button>
+            <button
+              onClick={handleMeetTask}
+              className="text-2xl text-green-400 hover:underline"
+            >
+              <FaVideo />
+            </button>
+         </div>
           )}
         </div>
 

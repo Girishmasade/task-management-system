@@ -54,12 +54,6 @@ const linkData = [
   },
 
   {
-    label: "meet",
-    link: "meet",
-    icon: <IoIosVideocam />
-  },
-
-  {
     label: "chat",
     link: "chat",
     icon: <IoChatbubbleEllipsesSharp />
