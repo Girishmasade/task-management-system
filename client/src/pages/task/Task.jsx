@@ -37,7 +37,7 @@ const Tasks = () => {
 
   const tasks = data?.tasks ?? [];
 
-  console.log("Tasks Data:", tasks); // Debugging tasks data
+  // console.log("Tasks Data:", tasks); // Debugging tasks data
 
   if (isLoading) {
     return (
@@ -71,7 +71,13 @@ const Tasks = () => {
         </div>
 
         {/* Board View */}
-        <BoardView tasks={tasks} />
+        {selected !== 1 ? (
+          <BoardView tasks={tasks} />
+        ) : (
+          <div className='w-full'>
+            <Table tasks={tasks} />
+          </div>
+        )}
       </Tabs>
 
       {/* Add Task Modal */}

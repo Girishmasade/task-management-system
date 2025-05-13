@@ -112,7 +112,7 @@ const Login = () => {
             </div>
 
             <div className="flex justify-between items-center text-xs sm:text-sm text-gray-400">
-              <Link to="/forgot-password" className="hover:text-green-400">Forgot Password?</Link>
+              <Link to="/forget-pass" className="hover:text-green-400">Forgot Password?</Link>
             </div>
 
             {/* Submit Button or Loader */}

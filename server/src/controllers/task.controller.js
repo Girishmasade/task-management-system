@@ -284,23 +284,28 @@ export const updateTask = async (req, res) => {
 
     const task = await Task.findById(id);
 
-    task.title = title;
-    task.date = date;
-    task.priority = priority;
-    task.assets = assets;
-    task.stage = stage.toLowerCase();
-    task.team = team;
+    if (!task) {
+      return res.status(404).json({ status: false, message: "Task not found" });
+    }
+
+    if (title) task.title = title;
+    if (date) task.date = date;
+    if (priority) task.priority = priority;
+    if (assets) task.assets = assets;
+    if (stage) task.stage = stage.toLowerCase();
+    if (team) task.team = team;
 
     await task.save();
 
     res
       .status(200)
-      .json({ status: true, message: "Task duplicated successfully." });
+      .json({ status: true, message: "Task updated successfully." });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
   }
 };
+
 
 export const trashTask = async (req, res) => {
   try {
