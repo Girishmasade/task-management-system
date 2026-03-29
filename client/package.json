@@ -13,7 +13,7 @@
     "@google/generative-ai": "^0.24.0",
     "@headlessui/react": "^2.2.0",
     "@reduxjs/toolkit": "^2.6.1",
-    "axios": "^1.8.3",
+    "axios": "^1.13.5",
     "clsx": "^2.1.1",
     "firebase": "^11.6.0",
     "headlessui": "^0.0.0",
